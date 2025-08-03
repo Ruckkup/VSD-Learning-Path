@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VSD Maintenance Learning Path</title>
+    <link rel="stylesheet" href="style.css"> <!-- ถ้ามีไฟล์ CSS -->
+</head>
+<body>
+    <h1>VSD Maintenance Learning Path</h1>
+
+    <div class="user-section">
+        <label for="userEmail">ใส่อีเมลของคุณเพื่อบันทึกความคืบหน้า:</label>
+        <input type="email" id="userEmail" placeholder="youremail@example.com">
+        <button id="loadProgressBtn">โหลดข้อมูล</button>
+    </div>
+
+    <hr>
+
+    <div class="lesson" id="lesson-1">
+        <h2>Module 1.1: Safety First!</h2>
+        <p>เนื้อหาเกี่ยวกับความปลอดภัยในการทำงานกับระบบไฟฟ้า...</p>
+        <button class="complete-btn" data-lesson-id="lesson-1">✔️ ทำเครื่องหมายว่าเรียนจบแล้ว</button>
+        <span class="status">สถานะ: ยังไม่เริ่ม</span>
+    </div>
+
+    <div class="lesson" id="lesson-2">
+        <h2>Module 1.2: Basic Electrical & Motor Theory</h2>
+        <p>เนื้อหาเกี่ยวกับพื้นฐานไฟฟ้าและมอเตอร์...</p>
+        <button class="complete-btn" data-lesson-id="lesson-2">✔️ ทำเครื่องหมายว่าเรียนจบแล้ว</button>
+        <span class="status">สถานะ: ยังไม่เริ่ม</span>
+    </div>
+
+    <!-- 1. โหลดไลบรารีของ Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- 2. โหลดไฟล์ JavaScript ของเรา -->
+    <script src="app.js"></script>
+</body>
+</html>
