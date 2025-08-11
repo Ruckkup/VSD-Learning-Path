@@ -1,20 +1,217 @@
-/* สไตล์สำหรับลิงก์ที่เรียนจบแล้วในหน้า Home */
-.lesson-list a.completed {
-    color: #28a745; /* สีเขียว */
-    font-weight: bold;
+/* === FONT IMPORT === */
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+
+/* === BASE STYLES & LAYOUT === */
+body {
+    font-family: 'Sarabun', sans-serif;
+    line-height: 1.7;
+    color: #333;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
 }
 
+.page-wrapper {
+    padding: 20px 0;
+    min-height: 100vh;
+}
+
+.vsd-learning-path {
+    max-width: 1140px; 
+    margin: 0 auto; 
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 30px 45px 50px 45px;
+}
+
+/* === TYPOGRAPHY === */
+h1 { color: #0056b3; font-size: 2.2em; font-weight: 700; text-align: center; margin-bottom: 25px; border-bottom: 2px solid #e9ecef; padding-bottom: 20px; }
+h2 { color: #007bff; font-size: 1.6em; font-weight: 700; margin-top: 30px; margin-bottom: 20px; }
+h3 { color: #17a2b8; font-size: 1.4em; font-weight: 700; }
+p, ul li { font-size: 1.0em; margin-bottom: 15px; }
+strong { color: #0056b3; font-weight: 700; }
+
+/* === HOME PAGE: WELCOME SECTION === */
+.welcome-section {
+    background-color: #f1f8ff;
+    border-left: 5px solid #007bff;
+    padding: 25px 30px;
+    margin-bottom: 40px;
+    border-radius: 8px;
+}
+.welcome-section h2 {
+    margin-top: 0;
+    color: #0056b3;
+}
+.welcome-section ul {
+    list-style: none;
+    padding-left: 10px;
+}
+.welcome-section ul li {
+    padding-left: 30px;
+    position: relative;
+}
+.welcome-section ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #28a745;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+/* === HOME PAGE: PROGRESS BAR === */
+.progress-container {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px 25px;
+    margin-bottom: 40px;
+    border: 1px solid #dee2e6;
+}
+.progress-container h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #0056b3;
+    font-size: 1.2em;
+}
+.progress-bar-background {
+    width: 100%;
+    height: 30px;
+    background-color: #e9ecef;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+}
+.progress-bar-foreground {
+    height: 100%;
+    width: 0%; /* Start at 0% */
+    background-color: #28a745;
+    border-radius: 15px;
+    transition: width 0.5s ease-in-out; /* Smooth animation */
+}
+.progress-text {
+    text-align: center;
+    font-weight: bold;
+    color: #495057;
+    margin-top: 10px;
+    font-size: 1.1em;
+}
+
+/* === HOME PAGE: MODULE GRID & CARDS === */
+.module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+.module-card {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+.module-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+.module-header {
+    background-color: #0056b3;
+    color: #ffffff;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+}
+.module-header h3 {
+    color: #ffffff;
+    margin: 0;
+    font-size: 1.25em;
+}
+.module-icon {
+    font-size: 1.5em;
+    margin-right: 15px;
+}
+.lesson-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
+}
+.lesson-list li {
+    margin-bottom: 0;
+    border-bottom: 1px solid #e9ecef;
+}
+.lesson-list li:last-child {
+    border-bottom: none;
+}
+.lesson-list a {
+    display: block;
+    padding: 14px 20px;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-size: 0.95em;
+}
+.lesson-list a::before {
+    content: '📄';
+    margin-right: 12px;
+    opacity: 0.7;
+}
+.lesson-list a:hover {
+    background-color: #f8f9fa;
+    color: #0056b3;
+    font-weight: 700;
+}
+.resource-card .module-header {
+    background-color: #28a745;
+}
+.lesson-list a.completed {
+    color: #28a745;
+    font-weight: bold;
+}
 .lesson-list a.completed::after {
-    content: ' ✅'; /* เพิ่มเครื่องหมายถูก */
+    content: ' ✅';
     display: inline-block;
     margin-left: 8px;
 }
 
-/* สไตล์สำหรับปุ่มในหน้าบทเรียน */
+/* === LESSON PAGES: FOOTER, NAVIGATION & COMPLETE BUTTON === */
+.lesson-footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
+.lesson-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.nav-button {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+.nav-button:hover {
+    background-color: #5a6268;
+}
+.nav-button.disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+    pointer-events: none;
+}
 #mark-complete-btn {
     display: block;
     width: 100%;
-    margin-top: 20px;
     padding: 15px;
     font-family: 'Sarabun', sans-serif;
     font-size: 1.1em;
@@ -26,12 +223,37 @@
     border-radius: 8px;
     transition: background-color 0.2s;
 }
-
 #mark-complete-btn:hover:not(:disabled) {
     background-color: #0056b3;
 }
-
 #mark-complete-btn:disabled {
     background-color: #28a745;
     cursor: not-allowed;
+}
+
+/* === RESPONSIVE ADJUSTMENTS === */
+@media (max-width: 768px) {
+    .page-wrapper { 
+        background-color: #ffffff; 
+        padding: 0; 
+    }
+    .vsd-learning-path { 
+        padding: 20px 15px 30px 15px;
+        box-shadow: none;
+    }
+    h1 { 
+        font-size: 1.8em; 
+        padding-bottom: 15px; 
+    }
+    .welcome-section { 
+        padding: 20px; 
+    }
+    .module-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: 20px;
+    }
+    .nav-button {
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
 }

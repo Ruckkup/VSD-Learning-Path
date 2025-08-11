@@ -40,10 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (isHomePage) {
         updateHomePageLinks();
+        updateProgressBar();
     }
 
     if (lessonContainer && !isHomePage) {
-        addCompletionButton(lessonContainer);
+        setupLessonFooter(lessonContainer);
     }
 });
 
@@ -52,6 +53,7 @@ function updateHomePageLinks() {
     const progress = getProgress();
     document.querySelectorAll('.lesson-list a').forEach(link => {
         const linkFile = link.getAttribute('href');
+        if (!linkFile || linkFile === '#') return;
         const lesson = lessons.find(l => l.file === linkFile);
 
         if (lesson && progress[lesson.id]) {
@@ -60,40 +62,99 @@ function updateHomePageLinks() {
     });
 }
 
-// --- ฟังก์ชันสำหรับหน้าบทเรียน ---
-function addCompletionButton(container) {
-    const currentPath = window.location.pathname.split('/').pop();
-    const currentLesson = lessons.find(lesson => lesson.file === currentPath);
-    
-    if (!currentLesson) return;
+function updateProgressBar() {
+    const progress = getProgress();
+    // นับเฉพาะบทเรียนที่มีในลิสต์ lessons เท่านั้น เผื่อมีข้อมูลเก่าค้างใน localStorage
+    const completedCount = Object.keys(progress).filter(id => lessons.some(l => l.id === id)).length;
+    const totalLessons = lessons.length;
+    const percentage = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+
+    if (progressBar && progressText) {
+        progressBar.style.width = `${percentage}%`;
+        progressText.textContent = `สำเร็จไปแล้ว ${percentage}% (${completedCount} จาก ${totalLessons} บทเรียน)`;
+    }
+}
+
+
+// --- ฟังก์ชันสำหรับหน้าบทเรียน (รวม Navigation และปุ่ม Complete) ---
+function setupLessonFooter(container) {
+    const currentPath = window.location.pathname.split('/').pop();
+    const currentIndex = lessons.findIndex(lesson => lesson.file === currentPath);
+    
+    if (currentIndex === -1) return; // ไม่ใช่หน้าบทเรียนในลิสต์
+
+    const currentLesson = lessons[currentIndex];
     const progress = getProgress();
     const lessonId = currentLesson.id;
 
     const conclusionDiv = container.querySelector('.conclusion');
     if (conclusionDiv) {
-        const button = document.createElement('button');
-        button.id = 'mark-complete-btn';
-        
-        if (progress[lessonId]) {
-            button.textContent = '✅ เรียนจบบทนี้แล้ว';
-            button.disabled = true;
+        // สร้าง Container ใหม่สำหรับส่วนท้ายทั้งหมด
+        const footerDiv = document.createElement('div');
+        footerDiv.className = 'lesson-footer';
+
+        // 1. สร้าง Navigation
+        const navDiv = document.createElement('div');
+        navDiv.className = 'lesson-nav';
+
+        // ปุ่ม Previous
+        const prevButton = document.createElement('a');
+        prevButton.className = 'nav-button';
+        if (currentIndex > 0) {
+            const prevLesson = lessons[currentIndex - 1];
+            prevButton.textContent = `← ${prevLesson.title}`;
+            prevButton.href = prevLesson.file;
         } else {
-            button.textContent = 'ทำเครื่องหมายว่าเรียนจบแล้ว';
+            prevButton.textContent = '← กลับหน้าแรก';
+            prevButton.href = 'index.html'; // ลิงก์ไปหน้าแรกถ้าเป็นบทที่ 1
+        }
+        
+        // ปุ่ม Next
+        const nextButton = document.createElement('a');
+        nextButton.className = 'nav-button';
+        if (currentIndex < lessons.length - 1) {
+            const nextLesson = lessons[currentIndex + 1];
+            nextButton.textContent = `${nextLesson.title} →`;
+            nextButton.href = nextLesson.file;
+        } else {
+            nextButton.textContent = 'กลับหน้าแรก →';
+            nextButton.href = 'index.html'; // ลิงก์ไปหน้าแรกถ้าเป็นบทสุดท้าย
         }
 
-        button.onclick = () => {
+        navDiv.appendChild(prevButton);
+        navDiv.appendChild(nextButton);
+        footerDiv.appendChild(navDiv);
+
+        // 2. สร้างปุ่ม Mark as Complete
+        const completeButton = document.createElement('button');
+        completeButton.id = 'mark-complete-btn';
+        
+        if (progress[lessonId]) {
+            completeButton.textContent = '✅ เรียนจบบทนี้แล้ว';
+            completeButton.disabled = true;
+        } else {
+            completeButton.textContent = 'ทำเครื่องหมายว่าเรียนจบแล้ว';
+        }
+
+        completeButton.onclick = () => {
             markComplete(lessonId);
-            button.textContent = '✅ เรียนจบบทนี้แล้ว';
-            button.disabled = true;
+            completeButton.textContent = '✅ เรียนจบบทนี้แล้ว';
+            completeButton.disabled = true;
             alert('บันทึกความคืบหน้าเรียบร้อย!');
         };
         
-        conclusionDiv.appendChild(button);
+        footerDiv.appendChild(completeButton);
+        
+        // นำ footer ที่สร้างทั้งหมดไปใส่ใน conclusionDiv
+        conclusionDiv.appendChild(footerDiv);
     }
 }
 
-// --- ฟังก์ชันจัดการ Local Storage ---
+
+// --- ฟังก์ชันจัดการ Local Storage (เหมือนเดิม) ---
 const PROGRESS_KEY = 'vsdLearningProgress';
 
 function getProgress() {
