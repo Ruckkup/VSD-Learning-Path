@@ -3,38 +3,303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VSD Maintenance Learning Path</title>
-    <link rel="stylesheet" href="style.css"> <!-- ถ้ามีไฟล์ CSS -->
-</head>
+    <title>VSD Maintenance Learning Path - Home</title>
+    <style>
+        /* === BASE STYLES (From your original file) === */
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Sarabun', sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #f0f2f5; /* Consistent background */
+            margin: 0;
+            padding: 0;
+        }
+
+        .page-wrapper {
+            padding: 20px 0; /* Add some padding for the wrapper */
+            min-height: 100vh;
+        }
+        
+        .vsd-learning-path {
+            max-width: 1140px; 
+            margin: 0 auto; 
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 30px 45px 50px 45px;
+        }
+
+        h1 { color: #0056b3; font-size: 2.2em; font-weight: 700; text-align: center; margin-bottom: 25px; border-bottom: 2px solid #e9ecef; padding-bottom: 20px; }
+        h2 { color: #007bff; font-size: 1.6em; font-weight: 700; margin-top: 30px; margin-bottom: 20px; }
+        h3 { color: #17a2b8; font-size: 1.4em; font-weight: 700; }
+        p, ul li { font-size: 1.0em; margin-bottom: 15px; }
+        strong { color: #0056b3; font-weight: 700; }
+        
+        /* === NEW STYLES for Module Navigation Page === */
+
+        /* Welcome Section (Module 00) */
+        .welcome-section {
+            background-color: #f1f8ff; /* Light blue background */
+            border-left: 5px solid #007bff;
+            padding: 25px 30px;
+            margin-bottom: 40px;
+            border-radius: 8px;
+        }
+        .welcome-section h2 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+        .welcome-section ul {
+            list-style: none;
+            padding-left: 10px;
+        }
+        .welcome-section ul li {
+            padding-left: 30px;
+            position: relative;
+        }
+        .welcome-section ul li::before {
+            content: '✓'; /* Checkmark icon */
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* Module Grid Layout */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Responsive grid */
+            gap: 30px; /* Space between cards */
+        }
+
+        /* Module Card Styling */
+        .module-card {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            overflow: hidden; /* To keep border-radius on header */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        /* Module Card Header */
+        .module-header {
+            background-color: #0056b3; /* Main blue color */
+            color: #ffffff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+        }
+        .module-header h3 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 1.25em;
+        }
+        .module-icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+        }
+        
+        /* Lesson List Styling */
+        .lesson-list {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            flex-grow: 1; /* Make list fill the space */
+        }
+        .lesson-list li {
+            margin-bottom: 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .lesson-list li:last-child {
+            border-bottom: none;
+        }
+        .lesson-list a {
+            display: block;
+            padding: 14px 20px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            font-size: 0.95em;
+        }
+        .lesson-list a::before {
+            content: '📄';
+            margin-right: 12px;
+            opacity: 0.7;
+        }
+        .lesson-list a:hover {
+            background-color: #f8f9fa;
+            color: #0056b3;
+            font-weight: 700;
+        }
+
+        /* Resource Center Card - Special Style */
+        .resource-card .module-header {
+            background-color: #28a745; /* Green for resources */
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .page-wrapper { background-color: #ffffff; padding: 0; }
+            .vsd-learning-path { 
+                padding: 20px 15px 30px 15px;
+                box-shadow: none;
+            }
+            h1 { font-size: 1.8em; padding-bottom: 15px; }
+            .welcome-section { padding: 20px; }
+            .module-grid {
+                grid-template-columns: 1fr; /* Single column on mobile */
+                gap: 20px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 <body>
-    <h1>VSD Maintenance Learning Path</h1>
 
-    <div class="user-section">
-        <label for="userEmail">ใส่อีเมลของคุณเพื่อบันทึกความคืบหน้า:</label>
-        <input type="email" id="userEmail" placeholder="youremail@example.com">
-        <button id="loadProgressBtn">โหลดข้อมูล</button>
-    </div>
+    <div class="page-wrapper">
+        <div class="vsd-learning-path">
+            
+            <h1>VSD Maintenance Learning Path</h1>
 
-    <hr>
+            <!-- Module 00: Home / Welcome Section -->
+            <div class="welcome-section">
+                <h2>👋 ยินดีต้อนรับสู่เส้นทางการเรียนรู้ VSD!</h2>
+                <p>
+                    หลักสูตรนี้ถูกออกแบบมาเพื่อทีมงานใหม่และผู้ที่ต้องการทบทวนความรู้เกี่ยวกับการบำรุงรักษาอุปกรณ์ปรับความเร็วรอบมอเตอร์ (VSD) 
+                </p>
+                <h4>เป้าหมายการเรียนรู้</h4>
+                <p>เมื่อคุณเรียนรู้ครบทุกบทเรียนแล้ว คุณจะสามารถ:</p>
+                <ul>
+                    <li>อธิบายหลักการทำงานและส่วนประกอบของ VSD ได้</li>
+                    <li>ตั้งค่าพารามิเตอร์ที่สำคัญและใช้งาน VSD เบื้องต้นได้</li>
+                    <li>วิเคราะห์และแก้ไขปัญหา (Troubleshoot) ที่พบบ่อยได้</li>
+                    <li>ดำเนินการบำรุงรักษาเชิงป้องกัน (Preventive Maintenance) ได้อย่างถูกวิธี</li>
+                </ul>
+                <h4>วิธีใช้งานเว็บไซต์</h4>
+                <p>
+                    แต่ละ Module ด้านล่างประกอบด้วยบทเรียนย่อยๆ คุณสามารถคลิกที่ชื่อบทเรียนเพื่อเข้าไปศึกษาเนื้อหาได้โดยตรง ขอแนะนำให้เรียนไปตามลำดับเพื่อความเข้าใจที่ต่อเนื่องครับ
+                </p>
+            </div>
 
-    <div class="lesson" id="lesson-1">
-        <h2>Module 1.1: Safety First!</h2>
-        <p>เนื้อหาเกี่ยวกับความปลอดภัยในการทำงานกับระบบไฟฟ้า...</p>
-        <button class="complete-btn" data-lesson-id="lesson-1">✔️ ทำเครื่องหมายว่าเรียนจบแล้ว</button>
-        <span class="status">สถานะ: ยังไม่เริ่ม</span>
-    </div>
 
-    <div class="lesson" id="lesson-2">
-        <h2>Module 1.2: Basic Electrical & Motor Theory</h2>
-        <p>เนื้อหาเกี่ยวกับพื้นฐานไฟฟ้าและมอเตอร์...</p>
-        <button class="complete-btn" data-lesson-id="lesson-2">✔️ ทำเครื่องหมายว่าเรียนจบแล้ว</button>
-        <span class="status">สถานะ: ยังไม่เริ่ม</span>
-    </div>
+            <!-- Module Grid Layout -->
+            <div class="module-grid">
 
-    <!-- 1. โหลดไลบรารีของ Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- 2. โหลดไฟล์ JavaScript ของเรา -->
-    <script src="app.js"></script>
-</body>
+                <!-- Module 01 Card -->
+                <div class="module-card">
+                    <div class="module-header">
+                        <span class="module-icon">💡</span>
+                        <h3>Module 01: Introduction</h3>
+                    </div>
+                    <ul class="lesson-list">
+                        <li><a href="01.html">Lesson 01: What is VSD ?</a></li>
+                        <li><a href="02.html">Lesson 02: Basic Component</a></li>
+                        <li><a href="03.html">Lesson 03: Key Parameters</a></li>
+                        <li><a href="04.html">Lesson 04: Nameplate</a></li>
+                        <li><a href="05.html">Lesson 05: Example</a></li>
+                    </ul>
+                </div>
+
+                <!-- Module 02 Card -->
+                <div class="module-card">
+                    <div class="module-header">
+                        <span class="module-icon">⚙️</span>
+                        <h3>Module 02: AC Motor Fundamentals</h3>
+                    </div>
+                    <ul class="lesson-list">
+                        <li><a href="06.html">Lesson 06: Construc&Operat</a></li>
+                        <li><a href="07.html">Lesson 07: Torque-Speed</a></li>
+                        <li><a href="08.html">Lesson 08: Heating and Cooling</a></li>
+                        <li><a href="09.html">Lesson 09: V&f on Motor Perform</a></li>
+                        <li><a href="10.html">Lesson 10: Selecting the Motor</a></li>
+                    </ul>
+                </div>
+
+                <!-- Module 03 Card -->
+                <div class="module-card">
+                    <div class="module-header">
+                        <span class="module-icon">🕹️</span>
+                        <h3>Module 03: Control & Operation</h3>
+                    </div>
+                    <ul class="lesson-list">
+                        <li><a href="11.html">Lesson 11: Scalar Control</a></li>
+                        <li><a href="12.html">Lesson 12: Vector Control</a></li>
+                        <li><a href="13.html">Lesson 13: Direct Torque Control</a></li>
+                        <li><a href="14.html">Lesson 14: Slip Compensation</a></li>
+                        <li><a href="15.html">Lesson 15: Open VS Closed-Loop</a></li>
+                    </ul>
+                </div>
+
+                <!-- Module 04 Card -->
+                <div class="module-card">
+                    <div class="module-header">
+                        <span class="module-icon">🎛️</span>
+                        <h3>Module 04: Parameter & Config</h3>
+                    </div>
+                    <ul class="lesson-list">
+                        <li><a href="16.html">Lesson 16: VSD User Interface</a></li>
+                        <li><a href="17.html">Lesson 17: Set V/I/f</a></li>
+                        <li><a href="18.html">Lesson 18: Set Accel&Decel</a></li>
+                        <li><a href="19.html">Lesson 19: Protection Parameters</a></li>
+                        <li><a href="20.html">Lesson 20: Hands-on</a></li>
+                    </ul>
+                </div>
+
+                <!-- Module 05 Card -->
+                <div class="module-card">
+                    <div class="module-header">
+                        <span class="module-icon">🚀</span>
+                        <h3>Module 05: Application & Benifits</h3>
+                    </div>
+                    <ul class="lesson-list">
+                        <li><a href="21.html">Lesson 21: Pump</a></li>
+                        <li><a href="22.html">Lesson 22: Fan</a></li>
+                        <li><a href="23.html">Lesson 23: Conveyor</a></li>
+                        <li><a href="24.html">Lesson 24: Energy Saving</a></li>
+                        <li><a href="25.html">Lesson 25: Application</a></li>
+                    </ul>
+                </div>
+
+                <!-- Module 06 Card -->
+                <div class="module-card">
+                    <div class="module-header">
+                        <span class="module-icon">🔧</span>
+                        <h3>Module 06: Trobleshooting & Maint.</h3>
+                    </div>
+                    <ul class="lesson-list">
+                        <li><a href="26.html">Lesson 26: Faults&Alarms</a></li>
+                        <li><a href="27.html">Lesson 27: Using a Multimeter</a></li>
+                        <li><a href="28.html">Lesson 28: Check Input&Output V&I</a></li>
+                        <li><a href="29.html">Lesson 29: Problems Related to VSD</a></li>
+                        <li><a href="30.html">Lesson 30: Maintenance Procedures</a></li>
+                    </ul>
+                </div>
+
+                <!-- Module 07 Card -->
+                <div class="module-card resource-card">
+                    <div class="module-header">
+                        <span class="module-icon">📚</span>
+                        <h3>Module 07: Resource Center</h3>
+                    </div>
+                    <ul class="lesson-list">
+                        <li><a href="#">เอกสารอ้างอิงและลิงก์เพิ่มเติม</a></li>
+                    </ul>
+                </div>
+
+            </div> <!-- End of .module-grid -->
+
+        </div> <!-- End of .vsd-learning-path -->
+    </div> <!-- End of .page-wrapper -->
+<script src="scripts.js"></script>
+<script src="scripts.js"></script>
 </html>
