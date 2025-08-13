@@ -240,6 +240,27 @@
         }
     </style>
     <link rel="stylesheet" href="style.css">
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDmDvSOwdiEF0ZN5QWYpardsJZntdDVsNo",
+        authDomain: "vsd-maintenace-progressing.firebaseapp.com",
+        projectId: "vsd-maintenace-progressing",
+        storageBucket: "vsd-maintenace-progressing.firebasestorage.app",
+        messagingSenderId: "1070321938533",
+        appId: "1:1070321938533:web:92707b3bfff8c8f64bd68c",
+        measurementId: "G-HL45FSZLY2"
+      };
+      firebase.initializeApp(firebaseConfig);
+
+      // Sign in anonymously
+      firebase.auth().signInAnonymously().catch(function(error) {
+        console.error(error);
+      });
+    </script>
 </head>
 <body>
 
@@ -428,5 +449,62 @@
     </div> <!-- End of .page-wrapper -->
     
 <script src="scripts.js"></script>
+<script>
+class ProgressTracker {
+    constructor() {
+        this.userId = null;
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                this.userId = user.uid;
+                this.loadProgress();
+            }
+        });
+        this.progress = {};
+    }
+
+    loadProgress() {
+        if (!this.userId) return;
+        firebase.database().ref('progress/' + this.userId).once('value').then(snapshot => {
+            this.progress = snapshot.val() || {};
+            updateHomePageLinks();
+            updateProgressBar();
+            updateModuleProgress();
+        });
+    }
+
+    saveProgress() {
+        if (!this.userId) return;
+        firebase.database().ref('progress/' + this.userId).set(this.progress);
+    }
+
+    markComplete(lessonId) {
+        this.progress[lessonId] = true;
+        this.saveProgress();
+        return true;
+    }
+
+    isComplete(lessonId) {
+        return !!this.progress[lessonId];
+    }
+
+    getCompletionStats() {
+        // ...same as before...
+    }
+
+    getModuleProgress(moduleName) {
+        // ...same as before...
+    }
+
+    resetProgress(lessonId) {
+        if (lessonId) {
+            delete this.progress[lessonId];
+        } else {
+            this.progress = {};
+        }
+        this.saveProgress();
+        return true;
+    }
+}
+</script>
 </body>
-</html><script src="scripts.js"></script>
+</html>
