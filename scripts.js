@@ -298,3 +298,42 @@ function showNotification(message) {
         }, 300); // Wait for fade out animation
     }, 3000);
 }
+
+// --- FIREBASE AUTH UI ---
+function renderAuthUI(user) {
+    const container = document.getElementById('auth-container');
+    if (!container) return;
+
+    if (user) {
+        // Show user info and logout button
+        let name = user.displayName || user.email || 'Anonymous';
+        container.innerHTML = `
+            <span>เข้าสู่ระบบ: ${name}</span>
+            <button id="logout-btn">ออกจากระบบ</button>
+        `;
+        document.getElementById('logout-btn').onclick = () => firebase.auth().signOut();
+    } else {
+        // Show login button
+        container.innerHTML = `
+            <button id="login-google-btn">เข้าสู่ระบบด้วย Google</button>
+            <button id="login-anon-btn">เข้าแบบไม่ระบุชื่อ</button>
+        `;
+        document.getElementById('login-google-btn').onclick = () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider);
+        };
+        document.getElementById('login-anon-btn').onclick = () => {
+            firebase.auth().signInAnonymously();
+        };
+    }
+}
+
+// --- INIT FIREBASE AUTH LISTENER ---
+firebase.auth().onAuthStateChanged(function(user) {
+    renderAuthUI(user);
+    // Optionally reload progress for new user
+    if (progressTracker && user) {
+        progressTracker.userId = user.uid;
+        progressTracker.loadProgress();
+    }
+});
