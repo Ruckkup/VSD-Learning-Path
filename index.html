@@ -15,6 +15,7 @@
             background-color: #f0f2f5;
             margin: 0;
             padding: 0;
+            position: relative; /* Added for auth container positioning */
         }
 
         .page-wrapper {
@@ -141,6 +142,10 @@
             color: #0056b3;
             font-weight: 700;
         }
+        .resource-card .module-header {
+             background-color: #28a745;
+        }
+        
         .lesson-list a.completed {
             color: #28a745;
             font-weight: 700;
@@ -238,48 +243,26 @@
                 text-align: center;
             }
         }
+
+        /* Hide Resource Center progress bar */
+        #module-07 .module-progress { display: none !important; }
+        /* Fix checkmark position */
+        .lesson-list a.completed::before { content: none; }
+        .lesson-list a.completed::after { content: '✅'; margin-left: 10px; }
     </style>
     <link rel="stylesheet" href="style.css">
-<!-- Firebase SDKs (เวอร์ชันที่เข้ากันได้และใช้ง่าย) -->
-        <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-
-        <script>
-          // การตั้งค่า Firebase สำหรับเว็บแอปของคุณ
-          // !!! คำเตือน: เพื่อความปลอดภัย ควรไปสร้าง API Key ใหม่ใน Firebase Console แล้วนำมาเปลี่ยน !!!
-          const firebaseConfig = {
-            apiKey: "AIzaSyDmDvSOwdiEF0ZN5QWYpardsJZntdDVsNo",
-            authDomain: "vsd-maintenace-progressing.firebaseapp.com",
-            projectId: "vsd-maintenace-progressing",
-            storageBucket: "vsd-maintenace-progressing.appspot.com",
-            messagingSenderId: "1070321938533",
-            appId: "1:1070321938533:web:92707b3bfff8c8f64bd68c",
-            measurementId: "G-HL45FSZLY2"
-          };
-
-          // เริ่มต้นการทำงาน Firebase
-          firebase.initializeApp(firebaseConfig);
-          
-          // สร้างตัวแปรสำหรับเรียกใช้ Authentication และ Firestore ได้ง่ายๆ
-          const auth = firebase.auth();
-          const db = firebase.firestore();
-        </script>
-
-        <!-- ไฟล์สคริปต์หลักของคุณ (ต้องอยู่หลัง Firebase) -->
-        <script src="scripts.js"></script>
-</body>
-</html></head>
+</head>
 <body>
-
     <div class="page-wrapper">
         <div class="vsd-learning-path">
             
             <h1>VSD Maintenance Learning Path</h1>
+
             <!-- === AUTHENTICATION CONTAINER === -->
             <div id="auth-container">
             <!-- เนื้อหาส่วนนี้จะถูกสร้างโดย JavaScript -->
             </div>
+
             <!-- Module 00: Home / Welcome Section -->
             <div class="welcome-section">
                 <h2>👋 ยินดีต้อนรับสู่เส้นทางการเรียนรู้ VSD!</h2>
@@ -310,7 +293,6 @@
 
             <!-- Module Grid Layout -->
             <div class="module-grid">
-
                 <!-- Module 01 Card -->
                 <div id="module-01" class="module-card">
                     <div class="module-header">
@@ -459,63 +441,30 @@
         </div> <!-- End of .vsd-learning-path -->
     </div> <!-- End of .page-wrapper -->
     
-<script src="scripts.js"></script>
-<script>
-class ProgressTracker {
-    constructor() {
-        this.userId = null;
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                this.userId = user.uid;
-                this.loadProgress();
-            }
-        });
-        this.progress = {};
-    }
+    <!-- Firebase SDKs (Realtime Database only) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDmDvSOwdiEF0ZN5QWYpardsJZntdDVsNo",
+        authDomain: "vsd-maintenace-progressing.firebaseapp.com",
+        databaseURL: "https://vsd-maintenace-progressing-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "vsd-maintenace-progressing",
+        storageBucket: "vsd-maintenace-progressing.appspot.com",
+        messagingSenderId: "1070321938533",
+        appId: "1:1070321938533:web:92707b3bfff8c8f64bd68c",
+        measurementId: "G-HL45FSZLY2"
+      };
+      firebase.initializeApp(firebaseConfig);
 
-    loadProgress() {
-        if (!this.userId) return;
-        firebase.database().ref('progress/' + this.userId).once('value').then(snapshot => {
-            this.progress = snapshot.val() || {};
-            updateHomePageLinks();
-            updateProgressBar();
-            updateModuleProgress();
-        });
-    }
-
-    saveProgress() {
-        if (!this.userId) return;
-        firebase.database().ref('progress/' + this.userId).set(this.progress);
-    }
-
-    markComplete(lessonId) {
-        this.progress[lessonId] = true;
-        this.saveProgress();
-        return true;
-    }
-
-    isComplete(lessonId) {
-        return !!this.progress[lessonId];
-    }
-
-    getCompletionStats() {
-        // ...same as before...
-    }
-
-    getModuleProgress(moduleName) {
-        // ...same as before...
-    }
-
-    resetProgress(lessonId) {
-        if (lessonId) {
-            delete this.progress[lessonId];
-        } else {
-            this.progress = {};
+      // Anonymous sign-in for progress tracking
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) {
+          firebase.auth().signInAnonymously();
         }
-        this.saveProgress();
-        return true;
-    }
-}
-</script>
+      });
+    </script>
+    <script src="scripts.js"></script>
 </body>
 </html>
