@@ -337,3 +337,42 @@ strong { color: #0056b3; font-weight: 700; }
         flex-direction: column;
     }
 }
+
+/* === สไตล์สำหรับส่วน Authentication === */
+#auth-container {
+    position: absolute;
+    top: 25px;
+    right: 45px;
+    font-size: 0.9em;
+    text-align: right;
+}
+
+#auth-container span {
+    display: block;
+    margin-bottom: 5px;
+    color: #6c757d;
+}
+
+#auth-container button {
+    background-color: transparent;
+    border: 1px solid #007bff;
+    color: #007bff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#auth-container button:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Responsive สำหรับมือถือ */
+@media (max-width: 768px) {
+    #auth-container {
+        position: static;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+}
