@@ -1,172 +1,338 @@
 // --- DATABASE: รายชื่อบทเรียนทั้งหมด ---
 // ตรวจสอบให้แน่ใจว่าชื่อไฟล์และ title ตรงกับที่คุณมี
 const lessons = [
-    { id: 'lesson-01', file: '01.html', title: 'What is VSD ?' },
-    { id: 'lesson-02', file: '02.html', title: 'Basic Component' },
-    { id: 'lesson-03', file: '03.html', title: 'Key Parameters' },
-    { id: 'lesson-04', file: '04.html', title: 'Nameplate' },
-    { id: 'lesson-05', file: '05.html', title: 'Case Study' },
-    { id: 'lesson-06', file: '06.html', title: 'Construction and Operation' },
-    { id: 'lesson-07', file: '07.html', title: 'Torque-Speed' },
-    { id: 'lesson-08', file: '08.html', title: 'Heating and Cooling' },
-    { id: 'lesson-09', file: '09.html', title: 'V&f on Motor Performance' },
-    { id: 'lesson-10', file: '10.html', title: 'Selecting the Motor' },
-    { id: 'lesson-11', file: '11.html', title: 'Scalar Control' },
-    { id: 'lesson-12', file: '12.html', title: 'Vector Control' },
-    { id: 'lesson-13', file: '13.html', title: 'Direct Torque Control' },
-    { id: 'lesson-14', file: '14.html', title: 'Slip Compensation' },
-    { id: 'lesson-15', file: '15.html', title: 'Open VS Closed-Loop' },
-    { id: 'lesson-16', file: '16.html', title: 'VSD User Interface' },
-    { id: 'lesson-17', file: '17.html', title: 'Set V/I/f' },
-    { id: 'lesson-18', file: '18.html', title: 'Set Accel&Decel' },
-    { id: 'lesson-19', file: '19.html', title: 'Protection Parameters' },
-    { id: 'lesson-20', file: '20.html', title: 'Hands-on' },
-    { id: 'lesson-21', file: '21.html', title: 'Pump' },
-    { id: 'lesson-22', file: '22.html', title: 'Fan' },
-    { id: 'lesson-23', file: '23.html', title: 'Conveyor' },
-    { id: 'lesson-24', file: '24.html', title: 'Energy Saving' },
-    { id: 'lesson-25', file: '25.html', title: 'VSD Application' },
-    { id: 'lesson-26', file: '26.html', title: 'Faults&Alarms' },
-    { id: 'lesson-27', file: '27.html', title: 'Using a Multimeter' },
-    { id: 'lesson-28', file: '28.html', title: 'Check Input&Output V&I' },
-    { id: 'lesson-29', file: '29.html', title: 'Problems Related to VSD' },
-    { id: 'lesson-30', file: '30.html', title: 'Maintenance Procedures' }
+    { id: 'lesson-01', file: '01.html', title: 'What is VSD ?', module: 'Module 01: Introduction' },
+    { id: 'lesson-02', file: '02.html', title: 'Basic Component', module: 'Module 01: Introduction' },
+    { id: 'lesson-03', file: '03.html', title: 'Key Parameters', module: 'Module 01: Introduction' },
+    { id: 'lesson-04', file: '04.html', title: 'Nameplate', module: 'Module 01: Introduction' },
+    { id: 'lesson-05', file: '05.html', title: 'Case Study', module: 'Module 01: Introduction' },
+    { id: 'lesson-06', file: '06.html', title: 'Construction and Operation', module: 'Module 02: AC Motor Fundamentals' },
+    { id: 'lesson-07', file: '07.html', title: 'Torque-Speed', module: 'Module 02: AC Motor Fundamentals' },
+    { id: 'lesson-08', file: '08.html', title: 'Heating and Cooling', module: 'Module 02: AC Motor Fundamentals' },
+    { id: 'lesson-09', file: '09.html', title: 'V&f on Motor Performance', module: 'Module 02: AC Motor Fundamentals' },
+    { id: 'lesson-10', file: '10.html', title: 'Selecting the Motor', module: 'Module 02: AC Motor Fundamentals' },
+    { id: 'lesson-11', file: '11.html', title: 'Scalar Control', module: 'Module 03: Control & Operation' },
+    { id: 'lesson-12', file: '12.html', title: 'Vector Control', module: 'Module 03: Control & Operation' },
+    { id: 'lesson-13', file: '13.html', title: 'Direct Torque Control', module: 'Module 03: Control & Operation' },
+    { id: 'lesson-14', file: '14.html', title: 'Slip Compensation', module: 'Module 03: Control & Operation' },
+    { id: 'lesson-15', file: '15.html', title: 'Open VS Closed-Loop', module: 'Module 03: Control & Operation' },
+    { id: 'lesson-16', file: '16.html', title: 'VSD User Interface', module: 'Module 04: User Interface' },
+    { id: 'lesson-17', file: '17.html', title: 'Set V/I/f', module: 'Module 04: User Interface' },
+    { id: 'lesson-18', file: '18.html', title: 'Set Accel&Decel', module: 'Module 04: User Interface' },
+    { id: 'lesson-19', file: '19.html', title: 'Protection Parameters', module: 'Module 04: User Interface' },
+    { id: 'lesson-20', file: '20.html', title: 'Hands-on', module: 'Module 04: User Interface' },
+    { id: 'lesson-21', file: '21.html', title: 'Pump', module: 'Module 05: Applications' },
+    { id: 'lesson-22', file: '22.html', title: 'Fan', module: 'Module 05: Applications' },
+    { id: 'lesson-23', file: '23.html', title: 'Conveyor', module: 'Module 05: Applications' },
+    { id: 'lesson-24', file: '24.html', title: 'Energy Saving', module: 'Module 05: Applications' },
+    { id: 'lesson-25', file: '25.html', title: 'VSD Application', module: 'Module 05: Applications' },
+    { id: 'lesson-26', file: '26.html', title: 'Faults&Alarms', module: 'Module 06: Troubleshooting' },
+    { id: 'lesson-27', file: '27.html', title: 'Using a Multimeter', module: 'Module 06: Troubleshooting' },
+    { id: 'lesson-28', file: '28.html', title: 'Check Input&Output V&I', module: 'Module 06: Troubleshooting' },
+    { id: 'lesson-29', file: '29.html', title: 'Problems Related to VSD', module: 'Module 06: Troubleshooting' },
+    { id: 'lesson-30', file: '30.html', title: 'Maintenance Procedures', module: 'Module 06: Troubleshooting' },
+    { id: 'resource-01', file: 'resource-01.html', title: 'VSD Documentation', module: 'Module 07: Resource Center' },
+    { id: 'resource-02', file: 'resource-02.html', title: 'Technical Papers', module: 'Module 07: Resource Center' },
+    { id: 'resource-03', file: 'resource-03.html', title: 'Video Library', module: 'Module 07: Resource Center' },
+    { id: 'resource-04', file: 'resource-04.html', title: 'Tools & Downloads', module: 'Module 07: Resource Center' }
 ];
 
-// --- LOGIC หลัก: จะทำงานเมื่อหน้าเว็บโหลดเสร็จ ---
+// --- CONFIGURATION ---
+const CONFIG = {
+    storageKey: 'vsdLearningProgress',
+    homePage: 'index.html',
+    modules: [
+        { id: 'module-01', name: 'Module 01: Introduction', icon: '💡' },
+        { id: 'module-02', name: 'Module 02: AC Motor Fundamentals', icon: '⚙️' },
+        { id: 'module-03', name: 'Module 03: Control & Operation', icon: '🕹️' },
+        { id: 'module-04', name: 'Module 04: User Interface', icon: '🖥️' },
+        { id: 'module-05', name: 'Module 05: Applications', icon: '🏭' },
+        { id: 'module-06', name: 'Module 06: Troubleshooting', icon: '🔧' },
+        { id: 'module-07', name: 'Module 07: Resource Center', icon: '📚' }
+    ]
+};
+
+// Helper: List of modules to track progress for
+const TRACKED_MODULES = CONFIG.modules
+    .filter(m => m.id !== 'module-07') // Exclude Resource Center
+    .map(m => m.name);
+
+// --- PROGRESS TRACKING SYSTEM ---
+class ProgressTracker {
+    constructor() {
+        this.progress = this.loadProgress();
+    }
+
+    loadProgress() {
+        const stored = localStorage.getItem(CONFIG.storageKey);
+        return stored ? JSON.parse(stored) : {};
+    }
+
+    saveProgress() {
+        localStorage.setItem(CONFIG.storageKey, JSON.stringify(this.progress));
+    }
+
+    markComplete(lessonId) {
+        this.progress[lessonId] = true;
+        this.saveProgress();
+        return true;
+    }
+
+    isComplete(lessonId) {
+        return !!this.progress[lessonId];
+    }
+
+    // Only count lessons in tracked modules
+    getCompletionStats() {
+        const trackedLessons = lessons.filter(l => TRACKED_MODULES.includes(l.module));
+        const completedCount = trackedLessons.filter(l => this.isComplete(l.id)).length;
+        const totalLessons = trackedLessons.length;
+        const percentage = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+        return { completedCount, totalLessons, percentage };
+    }
+
+    getModuleProgress(moduleName) {
+        if (!TRACKED_MODULES.includes(moduleName)) {
+            return { completedCount: 0, totalLessons: 0, percentage: 0 };
+        }
+        const moduleLessons = lessons.filter(l => l.module === moduleName);
+        const completedCount = moduleLessons.filter(l => this.isComplete(l.id)).length;
+        const totalLessons = moduleLessons.length;
+        const percentage = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+        return { completedCount, totalLessons, percentage };
+    }
+
+    resetProgress(lessonId) {
+        if (lessonId) {
+            delete this.progress[lessonId];
+        } else {
+            this.progress = {};
+        }
+        this.saveProgress();
+        return true;
+    }
+}
+
+// --- NAVIGATION SYSTEM ---
+class LessonNavigator {
+    constructor() {
+        this.lessons = lessons;
+    }
+
+    getCurrentLessonIndex() {
+        const currentPath = window.location.pathname.split('/').pop();
+        return this.lessons.findIndex(lesson => lesson.file === currentPath);
+    }
+
+    getNavigationButtons() {
+        const currentIndex = this.getCurrentLessonIndex();
+        
+        if (currentIndex === -1) return null;
+        
+        const prevLesson = currentIndex > 0 ? this.lessons[currentIndex - 1] : null;
+        const nextLesson = currentIndex < this.lessons.length - 1 ? this.lessons[currentIndex + 1] : null;
+        
+        return {
+            prev: prevLesson,
+            next: nextLesson,
+            isFirst: currentIndex === 0,
+            isLast: currentIndex === this.lessons.length - 1
+        };
+    }
+
+    createNavigationHTML() {
+        const nav = this.getNavigationButtons();
+        if (!nav) return '';
+        
+        let html = '<div class="lesson-nav">';
+        
+        if (nav.prev) {
+            html += `<a href="${nav.prev.file}" class="nav-button nav-prev">← ${nav.prev.title}</a>`;
+        } else {
+            html += '<div></div>';
+        }
+        
+        html += `<a href="index.html" class="nav-button home-button">🏠 กลับหน้าแรก</a>`;
+        
+        if (nav.next) {
+            html += `<a href="${nav.next.file}" class="nav-button nav-next">${nav.next.title} →</a>`;
+        } else {
+            html += '<div></div>';
+        }
+        
+        html += '</div>';
+        return html;
+    }
+}
+
+// --- INITIALIZATION ---
+const progressTracker = new ProgressTracker();
+const lessonNavigator = new LessonNavigator();
+
+// --- MAIN APPLICATION LOGIC ---
 document.addEventListener('DOMContentLoaded', () => {
     const isHomePage = document.querySelector('.module-grid');
     const lessonContainer = document.querySelector('.vsd-learning-path');
 
     if (isHomePage) {
-        updateHomePageLinks();
-        updateProgressBar();
-    }
-
-    if (lessonContainer && !isHomePage) {
-        setupLessonFooter(lessonContainer);
+        initializeHomePage();
+    } else if (lessonContainer) {
+        initializeLessonPage(lessonContainer);
     }
 });
 
-// --- ฟังก์ชันสำหรับหน้า Home ---
+// --- HOME PAGE FUNCTIONS ---
+function initializeHomePage() {
+    updateHomePageLinks();
+    updateProgressBar();
+    updateModuleProgress();
+}
+
 function updateHomePageLinks() {
-    const progress = getProgress();
     document.querySelectorAll('.lesson-list a').forEach(link => {
         const linkFile = link.getAttribute('href');
         if (!linkFile || linkFile === '#') return;
         const lesson = lessons.find(l => l.file === linkFile);
-
-        if (lesson && progress[lesson.id]) {
+        if (lesson && progressTracker.isComplete(lesson.id)) {
             link.classList.add('completed');
+        } else {
+            link.classList.remove('completed');
         }
     });
 }
 
-function updateProgressBar() {
-    const progress = getProgress();
-    // นับเฉพาะบทเรียนที่มีในลิสต์ lessons เท่านั้น เผื่อมีข้อมูลเก่าค้างใน localStorage
-    const completedCount = Object.keys(progress).filter(id => lessons.some(l => l.id === id)).length;
-    const totalLessons = lessons.length;
-    const percentage = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+function markComplete(lessonId) {
+    if (progressTracker.markComplete(lessonId)) {
+        updateProgressBar();
+        updateModuleProgress();
+        updateHomePageLinks();
+        showNotification('บันทึกความคืบหน้าเรียบร้อย!');
+        return true;
+    }
+    return false;
+}
 
-    const progressBar = document.getElementById('progress-bar');
+function updateProgressBar() {
+    const stats = progressTracker.getCompletionStats();
+    const progressBar = document.getElementById('progress-bar'); 
     const progressText = document.getElementById('progress-text');
 
     if (progressBar && progressText) {
-        progressBar.style.width = `${percentage}%`;
-        progressText.textContent = `สำเร็จไปแล้ว ${percentage}% (${completedCount} จาก ${totalLessons} บทเรียน)`;
+        progressBar.style.width = `${stats.percentage}%`;
+        progressText.textContent = `สำเร็จไปแล้ว ${stats.percentage}% (${stats.completedCount} จาก ${stats.totalLessons} บทเรียน)`;
     }
 }
 
 
-// --- ฟังก์ชันสำหรับหน้าบทเรียน (รวม Navigation และปุ่ม Complete) ---
+function updateModuleProgress() {
+    const moduleGrid = document.querySelector('.module-grid');
+    if (!moduleGrid) return;
+    
+    CONFIG.modules.forEach(module => {
+        const moduleCard = moduleGrid.querySelector(`#${module.id}`);
+        if (!moduleCard) return;
+
+        // Hide progress bar for Resource Center
+        if (module.id === 'module-07') {
+            const progressContainer = moduleCard.querySelector('.module-progress');
+            if (progressContainer) progressContainer.style.display = 'none';
+            return;
+        }
+        
+        const stats = progressTracker.getModuleProgress(module.name);
+        const progressContainer = moduleCard.querySelector('.module-progress');
+        
+        if (progressContainer) {
+            progressContainer.style.display = '';
+            progressContainer.innerHTML = `
+                <div class="module-progress-bar">
+                    <div class="module-progress-fill" style="width: ${stats.percentage}%"></div>
+                </div>
+                <div class="module-progress-text">${stats.percentage}% (${stats.completedCount}/${stats.totalLessons})</div>
+            `;
+        }
+    });
+}
+
+// --- LESSON PAGE FUNCTIONS ---
+function initializeLessonPage(container) {
+    setupLessonFooter(container);
+}
+
+// --- MODIFIED FUNCTION ---
 function setupLessonFooter(container) {
     const currentPath = window.location.pathname.split('/').pop();
     const currentIndex = lessons.findIndex(lesson => lesson.file === currentPath);
     
-    if (currentIndex === -1) return; // ไม่ใช่หน้าบทเรียนในลิสต์
+    if (currentIndex === -1) return;
 
     const currentLesson = lessons[currentIndex];
-    const progress = getProgress();
-    const lessonId = currentLesson.id;
-
-    const conclusionDiv = container.querySelector('.conclusion');
-    if (conclusionDiv) {
-        // สร้าง Container ใหม่สำหรับส่วนท้ายทั้งหมด
-        const footerDiv = document.createElement('div');
-        footerDiv.className = 'lesson-footer';
-
-        // 1. สร้าง Navigation
-        const navDiv = document.createElement('div');
-        navDiv.className = 'lesson-nav';
-
-        // ปุ่ม Previous
-        const prevButton = document.createElement('a');
-        prevButton.className = 'nav-button';
-        if (currentIndex > 0) {
-            const prevLesson = lessons[currentIndex - 1];
-            prevButton.textContent = `← ${prevLesson.title}`;
-            prevButton.href = prevLesson.file;
-        } else {
-            prevButton.textContent = '← กลับหน้าแรก';
-            prevButton.href = 'index.html'; // ลิงก์ไปหน้าแรกถ้าเป็นบทที่ 1
-        }
-        
-        // ปุ่ม Next
-        const nextButton = document.createElement('a');
-        nextButton.className = 'nav-button';
-        if (currentIndex < lessons.length - 1) {
-            const nextLesson = lessons[currentIndex + 1];
-            nextButton.textContent = `${nextLesson.title} →`;
-            nextButton.href = nextLesson.file;
-        } else {
-            nextButton.textContent = 'กลับหน้าแรก →';
-            nextButton.href = 'index.html'; // ลิงก์ไปหน้าแรกถ้าเป็นบทสุดท้าย
-        }
-
-        navDiv.appendChild(prevButton);
-        navDiv.appendChild(nextButton);
-        footerDiv.appendChild(navDiv);
-
-        // 2. สร้างปุ่ม Mark as Complete
-        const completeButton = document.createElement('button');
-        completeButton.id = 'mark-complete-btn';
-        
-        if (progress[lessonId]) {
-            completeButton.textContent = '✅ เรียนจบบทนี้แล้ว';
-            completeButton.disabled = true;
-        } else {
+    
+    const footerDiv = document.createElement('div');
+    footerDiv.className = 'lesson-footer';
+    
+    footerDiv.innerHTML = lessonNavigator.createNavigationHTML();
+    
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'button-container';
+    
+    const completeButton = document.createElement('button');
+    completeButton.id = 'mark-complete-btn';
+    completeButton.className = progressTracker.isComplete(currentLesson.id) ? 'completed' : '';
+    completeButton.textContent = progressTracker.isComplete(currentLesson.id) 
+        ? 'เรียนจบบทนี้แล้ว' 
+        : 'ทำเครื่องหมายว่าเรียนจบแล้ว';
+    
+    const resetButton = document.createElement('button');
+    resetButton.id = 'reset-progress-btn';
+    resetButton.className = 'reset-button';
+    resetButton.textContent = '🔄 รีเซ็ตบทเรียนนี้';
+    resetButton.style.display = progressTracker.isComplete(currentLesson.id) ? 'block' : 'none';
+    
+    completeButton.onclick = () => {
+        if (!progressTracker.isComplete(currentLesson.id)) {
+            progressTracker.markComplete(currentLesson.id);
+            completeButton.textContent = 'เรียนจบบทนี้แล้ว';
+            completeButton.classList.add('completed');
+            resetButton.style.display = 'block';
+            showNotification('บันทึกความคืบหน้าเรียบร้อย!');
+             }
+    };
+    
+    resetButton.onclick = () => {
+        if (progressTracker.resetProgress(currentLesson.id)) {
+            progressTracker.resetProgress(currentLesson.id);
             completeButton.textContent = 'ทำเครื่องหมายว่าเรียนจบแล้ว';
+            completeButton.classList.remove('completed');
+            resetButton.style.display = 'none';
+            showNotification('รีเซ็ตบทเรียนเรียบร้อย!');
         }
-
-        completeButton.onclick = () => {
-            markComplete(lessonId);
-            completeButton.textContent = '✅ เรียนจบบทนี้แล้ว';
-            completeButton.disabled = true;
-            alert('บันทึกความคืบหน้าเรียบร้อย!');
-        };
-        
-        footerDiv.appendChild(completeButton);
-        
-        // นำ footer ที่สร้างทั้งหมดไปใส่ใน conclusionDiv
-        conclusionDiv.appendChild(footerDiv);
-    }
+    };
+    
+    buttonContainer.appendChild(completeButton);
+    buttonContainer.appendChild(resetButton);
+    
+    footerDiv.appendChild(buttonContainer);
+    
+    container.appendChild(footerDiv);
 }
 
 
-// --- ฟังก์ชันจัดการ Local Storage (เหมือนเดิม) ---
-const PROGRESS_KEY = 'vsdLearningProgress';
-
-function getProgress() {
-    return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || {};
-}
-
-function saveProgress(progress) {
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
-}
-
-function markComplete(lessonId) {
-    const progress = getProgress();
-    progress[lessonId] = true;
-    saveProgress(progress);
+// --- UTILITY FUNCTIONS ---
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
 }

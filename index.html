@@ -12,13 +12,13 @@
             font-family: 'Sarabun', sans-serif;
             line-height: 1.7;
             color: #333;
-            background-color: #f0f2f5; /* Consistent background */
+            background-color: #f0f2f5;
             margin: 0;
             padding: 0;
         }
 
         .page-wrapper {
-            padding: 20px 0; /* Add some padding for the wrapper */
+            padding: 20px 0;
             min-height: 100vh;
         }
         
@@ -40,7 +40,7 @@
 
         /* Welcome Section (Module 00) */
         .welcome-section {
-            background-color: #f1f8ff; /* Light blue background */
+            background-color: #f1f8ff;
             border-left: 5px solid #007bff;
             padding: 25px 30px;
             margin-bottom: 40px;
@@ -59,7 +59,7 @@
             position: relative;
         }
         .welcome-section ul li::before {
-            content: '✓'; /* Checkmark icon */
+            content: '✓';
             position: absolute;
             left: 0;
             top: 0;
@@ -71,8 +71,8 @@
         /* Module Grid Layout */
         .module-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Responsive grid */
-            gap: 30px; /* Space between cards */
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
         }
 
         /* Module Card Styling */
@@ -80,7 +80,7 @@
             background-color: #ffffff;
             border: 1px solid #dee2e6;
             border-radius: 10px;
-            overflow: hidden; /* To keep border-radius on header */
+            overflow: hidden;
             box-shadow: 0 4px 8px rgba(0,0,0,0.06);
             transition: all 0.3s ease-in-out;
             display: flex;
@@ -93,7 +93,7 @@
 
         /* Module Card Header */
         .module-header {
-            background-color: #0056b3; /* Main blue color */
+            background-color: #0056b3;
             color: #ffffff;
             padding: 15px 20px;
             display: flex;
@@ -114,7 +114,7 @@
             list-style-type: none;
             margin: 0;
             padding: 0;
-            flex-grow: 1; /* Make list fill the space */
+            flex-grow: 1;
         }
         .lesson-list li {
             margin-bottom: 0;
@@ -141,10 +141,80 @@
             color: #0056b3;
             font-weight: 700;
         }
+        .lesson-list a.completed {
+            color: #28a745;
+            font-weight: 700;
+        }
+        .lesson-list a.completed::before {
+            content: '✅';
+        }
 
-        /* Resource Center Card - Special Style */
-        .resource-card .module-header {
-            background-color: #28a745; /* Green for resources */
+        /* Module Progress Bar */
+        .module-progress {
+            padding: 12px 20px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        .module-progress-bar {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .module-progress-fill {
+            height: 100%;
+            background-color: #28a745;
+            transition: width 0.3s ease;
+        }
+        .module-progress-text {
+            font-size: 0.85em;
+            color: #6c757d;
+            text-align: right;
+        }
+
+        /* Lesson Footer Styling */
+        .lesson-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .nav-button {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #f8f9fa;
+            color: #0056b3;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+        .nav-button:hover {
+            background-color: #e9ecef;
+        }
+        #mark-complete-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        #mark-complete-btn:hover:not(.completed) {
+            background-color: #0056b3;
+        }
+        #mark-complete-btn.completed {
+            background-color: #28a745;
+            cursor: default;
         }
 
         /* Responsive Adjustments */
@@ -157,8 +227,15 @@
             h1 { font-size: 1.8em; padding-bottom: 15px; }
             .welcome-section { padding: 20px; }
             .module-grid {
-                grid-template-columns: 1fr; /* Single column on mobile */
+                grid-template-columns: 1fr;
                 gap: 20px;
+            }
+            .lesson-nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-button {
+                text-align: center;
             }
         }
     </style>
@@ -191,7 +268,6 @@
                 </p>
             </div>
 
-            <!-- === PROGRESS BAR SECTION (ย้ายมาไว้ตรงนี้) === -->
             <div class="progress-container">
                 <h3>ภาพรวมความคืบหน้า</h3>
                 <div class="progress-bar-background">
@@ -199,13 +275,12 @@
                 </div>
                 <div id="progress-text" class="progress-text">0% Complete</div>
             </div>
-            <!-- === END OF PROGRESS BAR SECTION === -->
 
             <!-- Module Grid Layout -->
             <div class="module-grid">
 
                 <!-- Module 01 Card -->
-                <div class="module-card">
+                <div id="module-01" class="module-card">
                     <div class="module-header">
                         <span class="module-icon">💡</span>
                         <h3>Module 01: Introduction</h3>
@@ -217,11 +292,16 @@
                         <li><a href="04.html">Lesson 04: Nameplate</a></li>
                         <li><a href="05.html">Lesson 05: Case Study</a></li>
                     </ul>
+                    <div class="module-progress">
+                        <div class="module-progress-bar">
+                            <div class="module-progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="module-progress-text">0% (0/5)</div>
+                    </div>
                 </div>
 
-                <!-- (โค้ด Module 02 - 07 เหมือนเดิม) -->
                 <!-- Module 02 Card -->
-                <div class="module-card">
+                <div id="module-02" class="module-card">
                     <div class="module-header">
                         <span class="module-icon">⚙️</span>
                         <h3>Module 02: AC Motor Fundamentals</h3>
@@ -233,10 +313,16 @@
                         <li><a href="09.html">Lesson 09: V&f on Motor Performance</a></li>
                         <li><a href="10.html">Lesson 10: Selecting the Motor</a></li>
                     </ul>
+                    <div class="module-progress">
+                        <div class="module-progress-bar">
+                            <div class="module-progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="module-progress-text">0% (0/5)</div>
+                    </div>
                 </div>
 
                 <!-- Module 03 Card -->
-                <div class="module-card">
+                <div id="module-03" class="module-card">
                     <div class="module-header">
                         <span class="module-icon">🕹️</span>
                         <h3>Module 03: Control & Operation</h3>
@@ -248,13 +334,19 @@
                         <li><a href="14.html">Lesson 14: Slip Compensation</a></li>
                         <li><a href="15.html">Lesson 15: Open VS Closed-Loop</a></li>
                     </ul>
+                    <div class="module-progress">
+                        <div class="module-progress-bar">
+                            <div class="module-progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="module-progress-text">0% (0/5)</div>
+                    </div>
                 </div>
 
                 <!-- Module 04 Card -->
-                <div class="module-card">
+                <div id="module-04" class="module-card">
                     <div class="module-header">
-                        <span class="module-icon">🎛️</span>
-                        <h3>Module 04: Parameter & Config</h3>
+                        <span class="module-icon">🖥️</span>
+                        <h3>Module 04: User Interface</h3>
                     </div>
                     <ul class="lesson-list">
                         <li><a href="16.html">Lesson 16: VSD User Interface</a></li>
@@ -263,13 +355,19 @@
                         <li><a href="19.html">Lesson 19: Protection Parameters</a></li>
                         <li><a href="20.html">Lesson 20: Hands-on</a></li>
                     </ul>
+                    <div class="module-progress">
+                        <div class="module-progress-bar">
+                            <div class="module-progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="module-progress-text">0% (0/5)</div>
+                    </div>
                 </div>
 
                 <!-- Module 05 Card -->
-                <div class="module-card">
+                <div id="module-05" class="module-card">
                     <div class="module-header">
-                        <span class="module-icon">🚀</span>
-                        <h3>Module 05: Application & Benifits</h3>
+                        <span class="module-icon">🏭</span>
+                        <h3>Module 05: Applications</h3>
                     </div>
                     <ul class="lesson-list">
                         <li><a href="21.html">Lesson 21: Pump</a></li>
@@ -278,13 +376,19 @@
                         <li><a href="24.html">Lesson 24: Energy Saving</a></li>
                         <li><a href="25.html">Lesson 25: VSD Application</a></li>
                     </ul>
+                    <div class="module-progress">
+                        <div class="module-progress-bar">
+                            <div class="module-progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="module-progress-text">0% (0/5)</div>
+                    </div>
                 </div>
 
                 <!-- Module 06 Card -->
-                <div class="module-card">
+                <div id="module-06" class="module-card">
                     <div class="module-header">
                         <span class="module-icon">🔧</span>
-                        <h3>Module 06: Trobleshooting & Maint.</h3>
+                        <h3>Module 06: Troubleshooting</h3>
                     </div>
                     <ul class="lesson-list">
                         <li><a href="26.html">Lesson 26: Faults&Alarms</a></li>
@@ -293,17 +397,29 @@
                         <li><a href="29.html">Lesson 29: Problems Related to VSD</a></li>
                         <li><a href="30.html">Lesson 30: Maintenance Procedures</a></li>
                     </ul>
+                    <div class="module-progress">
+                        <div class="module-progress-bar">
+                            <div class="module-progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="module-progress-text">0% (0/5)</div>
+                    </div>
                 </div>
 
                 <!-- Module 07 Card -->
-                <div class="module-card resource-card">
+                <div id="module-07" class="module-card">
                     <div class="module-header">
                         <span class="module-icon">📚</span>
                         <h3>Module 07: Resource Center</h3>
                     </div>
                     <ul class="lesson-list">
-                        <li><a href="#">เอกสารอ้างอิงและลิงก์เพิ่มเติม</a></li>
+                        <li><a href="resource-01.html">VSD Documentation</a></li>
+                        <li><a href="resource-02.html">Technical Papers</a></li>
+                        <li><a href="resource-03.html">Video Library</a></li>
+                        <li><a href="resource-04.html">Tools & Downloads</a></li>
                     </ul>
+                    <div class="module-progress">
+                        <div class="module-progress-bar">
+                    </div>
                 </div>
                 
             </div> <!-- End of .module-grid -->
@@ -313,4 +429,4 @@
     
 <script src="scripts.js"></script>
 </body>
-</html>
+</html><script src="scripts.js"></script>

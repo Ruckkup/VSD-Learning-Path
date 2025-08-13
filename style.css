@@ -21,7 +21,6 @@ body {
     margin: 0 auto; 
     background-color: #ffffff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    padding: 30px 45px 50px 45px;
 }
 
 /* === TYPOGRAPHY === */
@@ -83,14 +82,14 @@ strong { color: #0056b3; font-weight: 700; }
     overflow: hidden;
     position: relative;
 }
-.progress-bar-foreground {
+#progress-bar {
     height: 100%;
-    width: 0%; /* Start at 0% */
+    width: 0%; 
     background-color: #28a745;
     border-radius: 15px;
-    transition: width 0.5s ease-in-out; /* Smooth animation */
+    transition: width 0.5s ease-in-out;
 }
-.progress-text {
+#progress-text {
     text-align: center;
     font-weight: bold;
     color: #495057;
@@ -138,7 +137,6 @@ strong { color: #0056b3; font-weight: 700; }
     list-style-type: none;
     margin: 0;
     padding: 0;
-    flex-grow: 1;
 }
 .lesson-list li {
     margin-bottom: 0;
@@ -155,60 +153,87 @@ strong { color: #0056b3; font-weight: 700; }
     transition: background-color 0.2s ease, color 0.2s ease;
     font-size: 0.95em;
 }
+
+/* 1. ไอคอนด้านหน้าจะเป็นรูปเอกสารเสมอ */
 .lesson-list a::before {
     content: '📄';
     margin-right: 12px;
     opacity: 0.7;
 }
+
 .lesson-list a:hover {
     background-color: #f8f9fa;
     color: #0056b3;
     font-weight: 700;
 }
-.resource-card .module-header {
-    background-color: #28a745;
-}
+
+/* 2. สไตล์สำหรับลิงก์ที่เรียนจบแล้ว */
 .lesson-list a.completed {
     color: #28a745;
     font-weight: bold;
 }
+
+/* 3. เพิ่มเครื่องหมายถูก ✅ ที่ด้านหลัง เฉพาะลิงก์ที่เรียนจบแล้วเท่านั้น */
 .lesson-list a.completed::after {
-    content: ' ✅';
-    display: inline-block;
-    margin-left: 8px;
+    content: '';
+    margin-left: 10px;
 }
 
-/* === LESSON PAGES: FOOTER, NAVIGATION & COMPLETE BUTTON === */
+/* === LESSON PAGES: FOOTER, NAVIGATION & COMPLETE BUTTON (MODIFIED) === */
 .lesson-footer {
-    margin-top: 40px;
+    margin-top: 30px;
     padding-top: 20px;
     border-top: 1px solid #e9ecef;
 }
+
+/* --- NEW LAYOUT FOR NAVIGATION --- */
 .lesson-nav {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    /* 3-column layout: Left (flexible), Center (auto-size), Right (flexible) */
+    grid-template-columns: 1fr auto 1fr;
+    gap: 15px;
     align-items: center;
     margin-bottom: 20px;
 }
+
 .nav-button {
-    display: inline-block;
-    padding: 12px 25px;
-    background-color: #6c757d;
-    color: white;
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    color: #0056b3;
     text-decoration: none;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: background-color 0.2s;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+    border: 1px solid #dee2e6;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center; /* Center text within the button */
 }
+
 .nav-button:hover {
-    background-color: #5a6268;
-}
-.nav-button.disabled {
     background-color: #e9ecef;
-    color: #6c757d;
-    cursor: not-allowed;
-    pointer-events: none;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+/* Specific alignment for each button in the grid */
+.nav-button.nav-prev {
+    justify-self: start; /* Align to the left */
+}
+.nav-button.home-button {
+    justify-self: center; /* Align to the center */
+}
+.nav-button.nav-next {
+    justify-self: end; /* Align to the right */
+}
+
+/* --- COMPLETE & RESET BUTTONS CONTAINER --- */
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
 #mark-complete-btn {
     display: block;
     width: 100%;
@@ -222,14 +247,60 @@ strong { color: #0056b3; font-weight: 700; }
     border: none;
     border-radius: 8px;
     transition: background-color 0.2s;
+    flex: 2; /* Make it wider than the reset button */
 }
-#mark-complete-btn:hover:not(:disabled) {
+#mark-complete-btn:hover:not(.completed) {
     background-color: #0056b3;
 }
-#mark-complete-btn:disabled {
+#mark-complete-btn.completed {
     background-color: #28a745;
-    cursor: not-allowed;
+    cursor: default;
 }
+
+.reset-button {
+    padding: 12px;
+    background-color: #6c757d; /* Softer color */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    flex: 1; /* Make it narrower than the complete button */
+}
+.reset-button:hover {
+    background-color: #5a6268;
+}
+
+/* === RESOURCE CENTER MODULE STYLING === */
+#module-07 .module-header {
+    background-color: #6c757d;
+}
+#module-07 .lesson-list a::before {
+    content: '📂';
+}
+
+/* === NOTIFICATION STYLES === */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 
 /* === RESPONSIVE ADJUSTMENTS === */
 @media (max-width: 768px) {
@@ -245,15 +316,24 @@ strong { color: #0056b3; font-weight: 700; }
         font-size: 1.8em; 
         padding-bottom: 15px; 
     }
-    .welcome-section { 
-        padding: 20px; 
-    }
     .module-grid {
-        grid-template-columns: 1fr; /* Single column on mobile */
+        grid-template-columns: 1fr;
         gap: 20px;
     }
-    .nav-button {
-        padding: 10px 15px;
-        font-size: 0.9em;
+    
+    /* Responsive Navigation */
+    .lesson-nav {
+        grid-template-columns: 1fr; /* Stack buttons vertically on mobile */
+        gap: 10px;
+    }
+    .nav-button.nav-prev,
+    .nav-button.home-button,
+    .nav-button.nav-next {
+        justify-self: stretch; /* Make all buttons full-width */
+        width: 100%;
+    }
+
+    .button-container {
+        flex-direction: column;
     }
 }
