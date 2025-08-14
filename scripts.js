@@ -1,5 +1,4 @@
 // --- DATABASE: รายชื่อบทเรียนทั้งหมด ---
-// ตรวจสอบให้แน่ใจว่าชื่อไฟล์และ title ตรงกับที่คุณมี
 const lessons = [
     { id: 'lesson-01', file: '01.html', title: 'What is VSD ?', module: 'Module 01: Introduction' },
     { id: 'lesson-02', file: '02.html', title: 'Basic Component', module: 'Module 01: Introduction' },
@@ -49,24 +48,56 @@ const CONFIG = {
     ]
 };
 
-// Helper: List of modules to track progress for
+const firebaseConfig = {
+    apiKey: "AIzaSyDmDvSOwdiEF0ZN5QWYpardsJZntdDVsNo",
+    authDomain: "vsd-maintenace-progressing.firebaseapp.com",
+    databaseURL: "https://vsd-maintenace-progressing-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "vsd-maintenace-progressing",
+    storageBucket: "vsd-maintenace-progressing.appspot.com",
+    messagingSenderId: "1070321938533",
+    appId: "1:1070321938533:web:92707b3bfff8c8f64bd68c",
+    measurementId: "G-HL45FSZLY2"
+};
+firebase.initializeApp(firebaseConfig);
+
 const TRACKED_MODULES = CONFIG.modules
-    .filter(m => m.id !== 'module-07') // Exclude Resource Center
+    .filter(m => m.id !== 'module-07')
     .map(m => m.name);
 
-// --- PROGRESS TRACKING SYSTEM ---
-class ProgressTracker {
+// --- UNIFIED PROGRESS TRACKER ---
+class UnifiedProgressTracker {
     constructor() {
-        this.progress = this.loadProgress();
+        this.progress = {};
+        this.userId = null;
+        this.dbRef = null;
+        this.localStoreKey = CONFIG.storageKey;
     }
 
-    loadProgress() {
-        const stored = localStorage.getItem(CONFIG.storageKey);
-        return stored ? JSON.parse(stored) : {};
+    async loadForUser(user) {
+        if (user) {
+            this.userId = user.uid;
+            this.dbRef = firebase.database().ref(`progress/${this.userId}`);
+            const snapshot = await this.dbRef.once('value');
+            this.progress = snapshot.val() || {};
+        } else {
+            this.userId = null;
+            this.dbRef = null;
+            const stored = localStorage.getItem(this.localStoreKey);
+            this.progress = stored ? JSON.parse(stored) : {};
+        }
+        this.saveToLocal(); // Always sync to local storage
+        updateUI();
+    }
+
+    saveToLocal() {
+        localStorage.setItem(this.localStoreKey, JSON.stringify(this.progress));
     }
 
     saveProgress() {
-        localStorage.setItem(CONFIG.storageKey, JSON.stringify(this.progress));
+        this.saveToLocal();
+        if (this.dbRef) {
+            this.dbRef.set(this.progress);
+        }
     }
 
     markComplete(lessonId) {
@@ -96,7 +127,7 @@ class ProgressTracker {
     getModuleProgress(moduleName) {
         const moduleLessons = lessons.filter(l => l.module === moduleName);
         if (moduleLessons.length === 0) {
-             return { completedCount: 0, totalLessons: 0, percentage: 0 };
+            return { completedCount: 0, totalLessons: 0, percentage: 0 };
         }
         const completedCount = moduleLessons.filter(l => this.isComplete(l.id)).length;
         const totalLessons = moduleLessons.length;
@@ -127,27 +158,79 @@ class LessonNavigator {
     }
 }
 
-// --- INITIALIZATION ---
-const progressTracker = new ProgressTracker();
+// --- GLOBAL INSTANCES ---
+const progressTracker = new UnifiedProgressTracker();
 const lessonNavigator = new LessonNavigator();
 
-// --- MAIN APPLICATION LOGIC ---
+// --- MAIN APP LOGIC ---
 document.addEventListener('DOMContentLoaded', () => {
+    // The main logic is now triggered by the auth state change
+});
+
+// --- AUTHENTICATION ---
+firebase.auth().onAuthStateChanged(async (user) => {
+    renderAuthUI(user);
+    await progressTracker.loadForUser(user);
+});
+
+function renderAuthUI(user) {
+    const authContainer = document.getElementById('auth-container');
+    if (!authContainer) return;
+
+    if (user) {
+        const name = user.displayName || user.email || (user.isAnonymous ? 'Anonymous' : 'User');
+        authContainer.innerHTML = `
+            <div class="user-info">
+                <span>Welcome, ${name}!</span>
+                <button id="logout-btn">Logout</button>
+            </div>
+        `;
+        document.getElementById('logout-btn').addEventListener('click', () => firebase.auth().signOut());
+    } else {
+        authContainer.innerHTML = `
+            <div class="login-buttons">
+                 <p>Login to save your progress across devices.</p>
+                 <button id="login-google-btn">Login with Google</button>
+                 <button id="login-anon-btn">Continue as Guest</button>
+            </div>
+        `;
+        document.getElementById('login-google-btn').addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider);
+        });
+        document.getElementById('login-anon-btn').addEventListener('click', () => {
+            firebase.auth().signInAnonymously();
+        });
+    }
+}
+
+// --- UI UPDATE FUNCTIONS ---
+function updateUI() {
     const isHomePage = document.querySelector('.module-grid');
     const lessonContainer = document.querySelector('.vsd-learning-path:not(:has(.module-grid))');
 
     if (isHomePage) {
-        initializeHomePage();
+        updateHomePageUI();
     } else if (lessonContainer) {
-        initializeLessonPage(lessonContainer);
+        updateLessonPageUI(lessonContainer);
     }
-});
+}
 
-// --- HOME PAGE FUNCTIONS ---
-function initializeHomePage() {
+function updateHomePageUI() {
     updateHomePageLinks();
     updateProgressBar();
     updateAllModuleProgress();
+}
+
+function updateLessonPageUI(container) {
+    const conclusionDiv = container.querySelector('.conclusion');
+    if (conclusionDiv) {
+        const oldFooter = conclusionDiv.querySelector('.lesson-footer');
+        if (oldFooter) {
+            oldFooter.remove();
+        }
+        setupLessonFooter(conclusionDiv);
+    }
 }
 
 function updateHomePageLinks() {
@@ -164,7 +247,7 @@ function updateHomePageLinks() {
 
 function updateProgressBar() {
     const stats = progressTracker.getCompletionStats();
-    const progressBar = document.getElementById('progress-bar'); 
+    const progressBar = document.getElementById('progress-bar');
     const progressText = document.getElementById('progress-text');
 
     if (progressBar && progressText) {
@@ -181,29 +264,21 @@ function updateAllModuleProgress() {
 
         const progressContainer = moduleCard.querySelector('.module-progress');
         if (!progressContainer) return;
-        
+
         if (module.id === 'module-07' || stats.totalLessons === 0) {
             progressContainer.style.display = 'none';
             return;
         }
 
         progressContainer.style.display = 'block';
-        progressContainer.innerHTML = `
-            <div class="module-progress-bar-background">
-                <div class="module-progress-bar-foreground" style="width: ${stats.percentage}%"></div>
-            </div>
-            <div class="module-progress-text">${stats.percentage}% (${stats.completedCount}/${stats.totalLessons})</div>
-        `;
+        const fillElement = progressContainer.querySelector('.module-progress-fill');
+        const textElement = progressContainer.querySelector('.module-progress-text');
+        
+        if(fillElement && textElement) {
+            fillElement.style.width = `${stats.percentage}%`;
+            textElement.textContent = `${stats.percentage}% (${stats.completedCount}/${stats.totalLessons})`;
+        }
     });
-}
-
-
-// --- LESSON PAGE FUNCTIONS ---
-function initializeLessonPage(container) {
-    const conclusionDiv = container.querySelector('.conclusion');
-    if (conclusionDiv) {
-        setupLessonFooter(conclusionDiv);
-    }
 }
 
 function setupLessonFooter(conclusionDiv) {
@@ -214,27 +289,19 @@ function setupLessonFooter(conclusionDiv) {
     const currentLesson = lessons[currentIndex];
     const isCompleted = progressTracker.isComplete(currentLesson.id);
 
-    // Create footer container
     const footerDiv = document.createElement('div');
     footerDiv.className = 'lesson-footer';
 
-    // Create Navigation HTML
     let navHTML = '<div class="lesson-nav">';
-    navHTML += navInfo.prev 
-        ? `<a href="${navInfo.prev.file}" class="nav-button nav-prev">← ${navInfo.prev.title}</a>`
-        : `<div></div>`; // Placeholder for alignment
+    navHTML += navInfo.prev ? `<a href="${navInfo.prev.file}" class="nav-button nav-prev">← ${navInfo.prev.title}</a>` : '<div></div>';
     navHTML += `<a href="${CONFIG.homePage}" class="nav-button home-button">🏠 กลับหน้าแรก</a>`;
-    navHTML += navInfo.next 
-        ? `<a href="${navInfo.next.file}" class="nav-button nav-next">${navInfo.next.title} →</a>`
-        : `<div></div>`; // Placeholder for alignment
+    navHTML += navInfo.next ? `<a href="${navInfo.next.file}" class="nav-button nav-next">${navInfo.next.title} →</a>` : '<div></div>';
     navHTML += '</div>';
     footerDiv.innerHTML = navHTML;
 
-    // Create Button Container
     const buttonContainer = document.createElement('div');
     buttonContainer.className = 'button-container';
 
-    // Create Mark Complete Button
     const completeButton = document.createElement('button');
     completeButton.id = 'mark-complete-btn';
     completeButton.textContent = isCompleted ? '✅ เรียนจบบทนี้แล้ว' : 'ทำเครื่องหมายว่าเรียนจบแล้ว';
@@ -242,28 +309,22 @@ function setupLessonFooter(conclusionDiv) {
         completeButton.classList.add('completed');
     }
 
-    // Create Reset Button
     const resetButton = document.createElement('button');
     resetButton.id = 'reset-progress-btn';
     resetButton.textContent = '🔄 รีเซ็ตบทเรียนนี้';
-    resetButton.style.display = isCompleted ? 'inline-block' : 'none'; // Show only if completed
+    resetButton.style.display = isCompleted ? 'inline-block' : 'none';
 
-    // --- Event Listeners ---
     completeButton.addEventListener('click', () => {
         if (!progressTracker.isComplete(currentLesson.id)) {
             progressTracker.markComplete(currentLesson.id);
-            completeButton.textContent = '✅ เรียนจบบทนี้แล้ว';
-            completeButton.classList.add('completed');
-            resetButton.style.display = 'inline-block';
+            updateLessonPageUI(conclusionDiv.parentElement);
             showNotification('บันทึกความคืบหน้าเรียบร้อย!');
         }
     });
 
     resetButton.addEventListener('click', () => {
         progressTracker.resetProgress(currentLesson.id);
-        completeButton.textContent = 'ทำเครื่องหมายว่าเรียนจบแล้ว';
-        completeButton.classList.remove('completed');
-        resetButton.style.display = 'none';
+        updateLessonPageUI(conclusionDiv.parentElement);
         showNotification('รีเซ็ตบทเรียนเรียบร้อย!');
     });
 
@@ -271,10 +332,8 @@ function setupLessonFooter(conclusionDiv) {
     buttonContainer.appendChild(resetButton);
     footerDiv.appendChild(buttonContainer);
 
-    // Append the entire footer to the conclusion section
     conclusionDiv.appendChild(footerDiv);
 }
-
 
 // --- UTILITY FUNCTIONS ---
 function showNotification(message) {
@@ -282,58 +341,19 @@ function showNotification(message) {
     notification.className = 'notification';
     notification.textContent = message;
     document.body.appendChild(notification);
-    
-    // Trigger animation
+
     setTimeout(() => {
         notification.classList.add('show');
     }, 10);
-    
-    // Hide and remove after 3 seconds
+
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => {
             if (document.body.contains(notification)) {
                 document.body.removeChild(notification);
             }
-        }, 300); // Wait for fade out animation
+        }, 300);
     }, 3000);
 }
 
-// --- FIREBASE AUTH UI ---
-function renderAuthUI(user) {
-    const container = document.getElementById('auth-container');
-    if (!container) return;
 
-    if (user) {
-        // Show user info and logout button
-        let name = user.displayName || user.email || 'Anonymous';
-        container.innerHTML = `
-            <span>เข้าสู่ระบบ: ${name}</span>
-            <button id="logout-btn">ออกจากระบบ</button>
-        `;
-        document.getElementById('logout-btn').onclick = () => firebase.auth().signOut();
-    } else {
-        // Show login button
-        container.innerHTML = `
-            <button id="login-google-btn">เข้าสู่ระบบด้วย Google</button>
-            <button id="login-anon-btn">เข้าแบบไม่ระบุชื่อ</button>
-        `;
-        document.getElementById('login-google-btn').onclick = () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithPopup(provider);
-        };
-        document.getElementById('login-anon-btn').onclick = () => {
-            firebase.auth().signInAnonymously();
-        };
-    }
-}
-
-// --- INIT FIREBASE AUTH LISTENER ---
-firebase.auth().onAuthStateChanged(function(user) {
-    renderAuthUI(user);
-    // Optionally reload progress for new user
-    if (progressTracker && user) {
-        progressTracker.userId = user.uid;
-        progressTracker.loadProgress();
-    }
-});

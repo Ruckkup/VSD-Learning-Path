@@ -455,13 +455,6 @@
         measurementId: "G-HL45FSZLY2"
       };
       firebase.initializeApp(firebaseConfig);
-
-      // Anonymous sign-in for progress tracking
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (!user) {
-          firebase.auth().signInAnonymously();
-        }
-      });
     </script>
     <script src="scripts.js"></script>
 </body>
