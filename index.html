@@ -492,18 +492,18 @@
       }
 
       // Google Sign-In
-      const provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithPopup(provider)
-        .then((result) => {
-          // User signed in
-          const user = result.user;
-          // Do something (e.g., show welcome message)
-        })
-        .catch((error) => {
-          // Handle errors
-          alert(error.message);
-        });
+      document.getElementById('login-google-btn').onclick = function() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider)
+          .then(result => {
+            // Success
+          })
+          .catch(error => {
+            alert(error.message);
+          });
+      };
     </script>
     <script src="scripts.js"></script>
+    <button id="login-google-btn">Sign in with Google</button>
 </body>
 </html>
