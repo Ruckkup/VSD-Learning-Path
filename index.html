@@ -462,6 +462,47 @@
           firebase.auth().signInAnonymously();
         }
       });
+
+      // Register a new user
+      function registerUser(email, password) {
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // User registered
+            const user = userCredential.user;
+            // Do something (e.g., show welcome message)
+          })
+          .catch((error) => {
+            // Handle errors (e.g., email already in use)
+            alert(error.message);
+          });
+      }
+
+      // Sign in an existing user
+      function signInUser(email, password) {
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // User signed in
+            const user = userCredential.user;
+            // Do something
+          })
+          .catch((error) => {
+            // Handle errors (e.g., wrong password)
+            alert(error.message);
+          });
+      }
+
+      // Google Sign-In
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider)
+        .then((result) => {
+          // User signed in
+          const user = result.user;
+          // Do something (e.g., show welcome message)
+        })
+        .catch((error) => {
+          // Handle errors
+          alert(error.message);
+        });
     </script>
     <script src="scripts.js"></script>
 </body>
