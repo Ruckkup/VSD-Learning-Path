@@ -179,7 +179,9 @@
           };
 
           // เริ่มต้นการทำงาน Firebase
-          firebase.initializeApp(firebaseConfig);
+          if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+          }
         </script>
 
         <!-- ไฟล์สคริปต์หลักของคุณ (ต้องอยู่หลัง Firebase) -->
