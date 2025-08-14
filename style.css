@@ -174,10 +174,8 @@ strong { color: #0056b3; font-weight: 700; }
 }
 
 /* 3. เพิ่มเครื่องหมายถูก ✅ ที่ด้านหลัง เฉพาะลิงก์ที่เรียนจบแล้วเท่านั้น */
-.lesson-list a.completed::after {
-    content: '';
-    margin-left: 10px;
-}
+.lesson-list a.completed::before { content: none; }
+.lesson-list a.completed::after { content: '✅'; margin-left: 10px; }
 
 /* === LESSON PAGES: FOOTER, NAVIGATION & COMPLETE BUTTON (MODIFIED) === */
 .lesson-footer {
