@@ -269,6 +269,10 @@ function setupLessonFooter(conclusionDiv) {
 
     // --- Event Listeners ---
     completeButton.addEventListener('click', () => {
+        if (!progressTracker.userId) {
+            showNotification('กรุณาเข้าสู่ระบบก่อนบันทึกความคืบหน้า');
+            return;
+        }
         if (!progressTracker.isComplete(currentLesson.id)) {
             progressTracker.markComplete(currentLesson.id);
             completeButton.textContent = '✅ เรียนจบบทนี้แล้ว';
