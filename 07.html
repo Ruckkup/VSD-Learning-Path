@@ -158,7 +158,7 @@
 <!-- Firebase SDKs (เวอร์ชันที่เข้ากันได้และใช้ง่าย) -->
         <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
         <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
         <script>
           // การตั้งค่า Firebase สำหรับเว็บแอปของคุณ
@@ -166,6 +166,7 @@
           const firebaseConfig = {
             apiKey: "AIzaSyDmDvSOwdiEF0ZN5QWYpardsJZntdDVsNo",
             authDomain: "vsd-maintenace-progressing.firebaseapp.com",
+            databaseURL: "https://vsd-maintenace-progressing-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "vsd-maintenace-progressing",
             storageBucket: "vsd-maintenace-progressing.appspot.com",
             messagingSenderId: "1070321938533",
@@ -175,10 +176,6 @@
 
           // เริ่มต้นการทำงาน Firebase
           firebase.initializeApp(firebaseConfig);
-          
-          // สร้างตัวแปรสำหรับเรียกใช้ Authentication และ Firestore ได้ง่ายๆ
-          const auth = firebase.auth();
-          const db = firebase.firestore();
         </script>
 
         <!-- ไฟล์สคริปต์หลักของคุณ (ต้องอยู่หลัง Firebase) -->
