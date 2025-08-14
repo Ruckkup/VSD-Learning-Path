@@ -491,41 +491,12 @@
         } else {
             container.innerHTML = `
                 <button id="login-google-btn">เข้าสู่ระบบด้วย Google</button>
-                <button id="login-email-btn">เข้าสู่ระบบด้วยอีเมล</button>
-                <button id="login-anon-btn">เข้าแบบไม่ระบุชื่อ</button>
             `;
             const googleBtn = document.getElementById('login-google-btn');
             if (googleBtn) {
                 googleBtn.onclick = function() {
                     const provider = new firebase.auth.GoogleAuthProvider();
                     firebase.auth().signInWithPopup(provider)
-                      .catch(error => alert(error.message));
-                };
-            }
-            const emailBtn = document.getElementById('login-email-btn');
-            if (emailBtn) {
-                emailBtn.onclick = function() {
-                    const email = prompt("กรุณากรอกอีเมล:");
-                    const password = prompt("กรุณากรอกรหัสผ่าน:");
-                    if (email && password) {
-                        firebase.auth().signInWithEmailAndPassword(email, password)
-                            .catch(error => {
-                                if (error.code === 'auth/user-not-found') {
-                                    if (confirm("ไม่พบผู้ใช้ ต้องการสมัครใหม่หรือไม่?")) {
-                                        firebase.auth().createUserWithEmailAndPassword(email, password)
-                                            .catch(err => alert(err.message));
-                                    }
-                                } else {
-                                    alert(error.message);
-                            }
-                        });
-                    }
-                };
-            }
-            const anonBtn = document.getElementById('login-anon-btn');
-            if (anonBtn) {
-                anonBtn.onclick = function() {
-                    firebase.auth().signInAnonymously()
                       .catch(error => alert(error.message));
                 };
             }
