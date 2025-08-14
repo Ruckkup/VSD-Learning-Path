@@ -54,42 +54,12 @@ const TRACKED_MODULES = CONFIG.modules
     .filter(m => m.id !== 'module-07') // Exclude Resource Center
     .map(m => m.name);
 
-// --- AUTH UI ---
-function renderAuthUI(user) {
-    const container = document.getElementById('auth-container');
-    if (!container) return;
-    if (user) {
-        let name = user.displayName || user.email || 'Guest';
-        container.innerHTML = `
-            <span>เข้าสู่ระบบ: ${name}</span>
-            <button id="logout-btn">ออกจากระบบ</button>
-        `;
-        const logoutBtn = document.getElementById('logout-btn');
-        if (logoutBtn) {
-            logoutBtn.onclick = () => firebase.auth().signOut();
-        }
-    } else {
-        container.innerHTML = `
-            <button id="login-google-btn">เข้าสู่ระบบด้วย Google</button>
-        `;
-        const googleBtn = document.getElementById('login-google-btn');
-        if (googleBtn) {
-            googleBtn.onclick = function() {
-                const provider = new firebase.auth.GoogleAuthProvider();
-                firebase.auth().signInWithPopup(provider)
-                  .catch(error => alert(error.message));
-            };
-        }
-    }
-}
-
-// --- PROGRESS TRACKER ---
+// --- PROGRESS TRACKING SYSTEM ---
 class ProgressTracker {
     constructor() {
         this.userId = null;
         this.progress = {};
         firebase.auth().onAuthStateChanged(user => {
-            renderAuthUI(user);
             if (user) {
                 this.userId = user.uid;
                 this.loadProgress();
@@ -119,13 +89,11 @@ class ProgressTracker {
     }
 
     markComplete(lessonId) {
-        if (!this.userId) return;
         this.progress[lessonId] = true;
         this.saveProgress();
     }
 
     resetProgress(lessonId) {
-        if (!this.userId) return;
         if (this.progress[lessonId]) {
             delete this.progress[lessonId];
             this.saveProgress();
@@ -201,35 +169,27 @@ function initializeHomePage() {
     updateAllModuleProgress();
 }
 
-function updateProgressBar() {
-    const progressContainer = document.getElementById('progress-container');
-    const progressBar = document.getElementById('progress-bar');
-    const progressText = document.getElementById('progress-text');
-    if (!progressTracker.userId) {
-        // Hide progress bar if not logged in
-        if (progressContainer) progressContainer.style.display = 'none';
-        return;
-    }
-    // Show progress bar if logged in
-    if (progressContainer) progressContainer.style.display = '';
-    const stats = progressTracker.getCompletionStats();
-    if (progressBar && progressText) {
-        progressBar.style.width = `${stats.percentage}%`;
-        progressText.textContent = `สำเร็จไปแล้ว ${stats.percentage}% (${stats.completedCount} จาก ${stats.totalLessons} บทเรียน)`;
-    }
-}
-
 function updateHomePageLinks() {
     document.querySelectorAll('.lesson-list a').forEach(link => {
         const linkFile = link.getAttribute('href');
         const lesson = lessons.find(l => l.file === linkFile);
-        // Only show checkmark if logged in and lesson is complete
-        if (lesson && progressTracker.userId && progressTracker.isComplete(lesson.id)) {
+        if (lesson && progressTracker.isComplete(lesson.id)) {
             link.classList.add('completed');
         } else {
             link.classList.remove('completed');
         }
     });
+}
+
+function updateProgressBar() {
+    const stats = progressTracker.getCompletionStats();
+    const progressBar = document.getElementById('progress-bar'); 
+    const progressText = document.getElementById('progress-text');
+
+    if (progressBar && progressText) {
+        progressBar.style.width = `${stats.percentage}%`;
+        progressText.textContent = `สำเร็จไปแล้ว ${stats.percentage}% (${stats.completedCount} จาก ${stats.totalLessons} บทเรียน)`;
+    }
 }
 
 function updateAllModuleProgress() {
@@ -309,10 +269,6 @@ function setupLessonFooter(conclusionDiv) {
 
     // --- Event Listeners ---
     completeButton.addEventListener('click', () => {
-        if (!progressTracker.userId) {
-            showNotification('กรุณาเข้าสู่ระบบก่อนบันทึกความคืบหน้า');
-            return;
-        }
         if (!progressTracker.isComplete(currentLesson.id)) {
             progressTracker.markComplete(currentLesson.id);
             completeButton.textContent = '✅ เรียนจบบทนี้แล้ว';

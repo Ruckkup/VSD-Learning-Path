@@ -4,23 +4,280 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VSD Maintenance Learning Path - Home</title>
+    <style>
+        /* === BASE STYLES (From your original file) === */
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Sarabun', sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            position: relative; /* Added for auth container positioning */
+        }
+
+        .page-wrapper {
+            padding: 20px 0;
+            min-height: 100vh;
+        }
+        
+        .vsd-learning-path {
+            max-width: 1140px; 
+            margin: 0 auto; 
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 30px 45px 50px 45px;
+        }
+
+        h1 { color: #0056b3; font-size: 2.2em; font-weight: 700; text-align: center; margin-bottom: 25px; border-bottom: 2px solid #e9ecef; padding-bottom: 20px; }
+        h2 { color: #007bff; font-size: 1.6em; font-weight: 700; margin-top: 30px; margin-bottom: 20px; }
+        h3 { color: #17a2b8; font-size: 1.4em; font-weight: 700; }
+        p, ul li { font-size: 1.0em; margin-bottom: 15px; }
+        strong { color: #0056b3; font-weight: 700; }
+        
+        /* === NEW STYLES for Module Navigation Page === */
+
+        /* Welcome Section (Module 00) */
+        .welcome-section {
+            background-color: #f1f8ff;
+            border-left: 5px solid #007bff;
+            padding: 25px 30px;
+            margin-bottom: 40px;
+            border-radius: 8px;
+        }
+        .welcome-section h2 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+        .welcome-section ul {
+            list-style: none;
+            padding-left: 10px;
+        }
+        .welcome-section ul li {
+            padding-left: 30px;
+            position: relative;
+        }
+        .welcome-section ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* Module Grid Layout */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        /* Module Card Styling */
+        .module-card {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        /* Module Card Header */
+        .module-header {
+            background-color: #0056b3;
+            color: #ffffff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+        }
+        .module-header h3 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 1.25em;
+        }
+        .module-icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+        }
+        
+        /* Lesson List Styling */
+        .lesson-list {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            flex-grow: 1;
+        }
+        .lesson-list li {
+            margin-bottom: 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .lesson-list li:last-child {
+            border-bottom: none;
+        }
+        .lesson-list a {
+            display: block;
+            padding: 14px 20px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            font-size: 0.95em;
+        }
+        .lesson-list a::before {
+            content: '📄';
+            margin-right: 12px;
+            opacity: 0.7;
+        }
+        .lesson-list a:hover {
+            background-color: #f8f9fa;
+            color: #0056b3;
+            font-weight: 700;
+        }
+        .resource-card .module-header {
+             background-color: #28a745;
+        }
+        
+        .lesson-list a.completed {
+            color: #28a745;
+            font-weight: 700;
+        }
+        .lesson-list a.completed::before {
+            content: '✅';
+        }
+
+        /* Module Progress Bar */
+        .module-progress {
+            padding: 12px 20px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        .module-progress-bar {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .module-progress-fill {
+            height: 100%;
+            background-color: #28a745;
+            transition: width 0.3s ease;
+        }
+        .module-progress-text {
+            font-size: 0.85em;
+            color: #6c757d;
+            text-align: right;
+        }
+
+        /* Lesson Footer Styling */
+        .lesson-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .nav-button {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #f8f9fa;
+            color: #0056b3;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+        .nav-button:hover {
+            background-color: #e9ecef;
+        }
+        #mark-complete-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        #mark-complete-btn:hover:not(.completed) {
+            background-color: #0056b3;
+        }
+        #mark-complete-btn.completed {
+            background-color: #28a745;
+            cursor: default;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .page-wrapper { background-color: #ffffff; padding: 0; }
+            .vsd-learning-path { 
+                padding: 20px 15px 30px 15px;
+                box-shadow: none;
+            }
+            h1 { font-size: 1.8em; padding-bottom: 15px; }
+            .welcome-section { padding: 20px; }
+            .module-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .lesson-nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-button {
+                text-align: center;
+            }
+        }
+
+        /* Hide Resource Center progress bar */
+        #module-07 .module-progress { display: none !important; }
+        /* Fix checkmark position */
+        .lesson-list a.completed::before { content: none; }
+        .lesson-list a.completed::after { content: '✅'; margin-left: 10px; }
+
+        /* Authentication Container Styles */
+        #auth-container {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        #auth-container button {
+            margin-left: 8px;
+            padding: 6px 16px;
+            border-radius: 5px;
+            border: 1px solid #dee2e6;
+            background: #f8f9fa;
+            color: #0056b3;
+            cursor: pointer;
+        }
+        #auth-container button:hover {
+            background: #e9ecef;
+        }
+    </style>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="page-wrapper">
         <div class="vsd-learning-path">
+            
             <h1>VSD Maintenance Learning Path</h1>
 
             <!-- === AUTHENTICATION CONTAINER === -->
             <div id="auth-container"></div>
-
-            <!-- Progress Bar (hidden until login) -->
-            <div id="progress-container" style="display:none;">
-                <div class="progress-bar-background">
-                    <div id="progress-bar" class="progress-bar-foreground"></div>
-                </div>
-                <div id="progress-text" class="progress-text"></div>
-            </div>
 
             <!-- Module 00: Home / Welcome Section -->
             <div class="welcome-section">
@@ -40,6 +297,14 @@
                 <p>
                     แต่ละ Module ด้านล่างประกอบด้วยบทเรียนย่อยๆ คุณสามารถคลิกที่ชื่อบทเรียนเพื่อเข้าไปศึกษาเนื้อหาได้โดยตรง ขอแนะนำให้เรียนไปตามลำดับเพื่อความเข้าใจที่ต่อเนื่องครับ
                 </p>
+            </div>
+
+            <div class="progress-container">
+                <h3>ภาพรวมความคืบหน้า</h3>
+                <div class="progress-bar-background">
+                    <div id="progress-bar" class="progress-bar-foreground"></div>
+                </div>
+                <div id="progress-text" class="progress-text">0% Complete</div>
             </div>
 
             <!-- Module Grid Layout -->
