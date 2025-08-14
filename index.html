@@ -506,8 +506,10 @@
       // --- Listen for Auth State ---
       firebase.auth().onAuthStateChanged(function(user) {
         renderAuthUI(user);
-        // You may want to reload progress here if using Firebase for progress tracking
-        // if (progressTracker && user) { progressTracker.userId = user.uid; progressTracker.loadProgress(); }
+        if (progressTracker && user) {
+            progressTracker.userId = user.uid;
+            progressTracker.loadProgress();
+        }
       });
     </script>
     <script src="scripts.js"></script>

@@ -57,16 +57,35 @@ const TRACKED_MODULES = CONFIG.modules
 // --- PROGRESS TRACKING SYSTEM ---
 class ProgressTracker {
     constructor() {
-        this.progress = this.loadProgress();
+        this.userId = null;
+        this.progress = {};
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                this.userId = user.uid;
+                this.loadProgress();
+            } else {
+                this.userId = null;
+                this.progress = {};
+                updateHomePageLinks();
+                updateProgressBar();
+                updateAllModuleProgress();
+            }
+        });
     }
 
     loadProgress() {
-        const stored = localStorage.getItem(CONFIG.storageKey);
-        return stored ? JSON.parse(stored) : {};
+        if (!this.userId) return;
+        firebase.database().ref('progress/' + this.userId).once('value').then(snapshot => {
+            this.progress = snapshot.val() || {};
+            updateHomePageLinks();
+            updateProgressBar();
+            updateAllModuleProgress();
+        });
     }
 
     saveProgress() {
-        localStorage.setItem(CONFIG.storageKey, JSON.stringify(this.progress));
+        if (!this.userId) return;
+        firebase.database().ref('progress/' + this.userId).set(this.progress);
     }
 
     markComplete(lessonId) {
@@ -331,7 +350,6 @@ function renderAuthUI(user) {
 // --- INIT FIREBASE AUTH LISTENER ---
 firebase.auth().onAuthStateChanged(function(user) {
     renderAuthUI(user);
-    // Optionally reload progress for new user
     if (progressTracker && user) {
         progressTracker.userId = user.uid;
         progressTracker.loadProgress();
