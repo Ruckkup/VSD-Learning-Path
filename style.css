@@ -267,19 +267,22 @@ strong { color: var(--primary-color); font-weight: 700; }
     cursor: default;
 }
 
-.reset-button {
-    padding: 12px;
+#reset-progress-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 1.1em;
+    font-weight: 700;
+    cursor: pointer;
     background-color: var(--dark-gray-color);
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 1em;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s;
     flex: 1;
 }
-.reset-button:hover {
+#reset-progress-btn:hover {
     background-color: #5a6268;
 }
 
