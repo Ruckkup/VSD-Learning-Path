@@ -169,14 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isHomePage) {
         initializeHomePage();
     } else if (lessonContainer) {
-        // Initial setup
-        initializeLessonPage(lessonContainer);
-
-        // Add event listener for pageshow to handle back/forward navigation
-        window.addEventListener('pageshow', function(event) {
-            // Re-initialize the lesson page to update button states
-            initializeLessonPage(document.querySelector('.vsd-learning-path:not(:has(.module-grid))'));
-        });
+        // Initial setup is handled by the real-time listener in loadProgress
     }
 });
 
@@ -226,8 +219,8 @@ function updateAllModuleProgress() {
 
         progressContainer.style.display = 'block';
         progressContainer.innerHTML = `
-            <div class="module-progress-bar-background">
-                <div class="module-progress-bar-foreground" style="width: ${stats.percentage}%"></div>
+            <div class="module-progress-bar">
+                <div class="module-progress-fill" style="width: ${stats.percentage}%"></div>
             </div>
             <div class="module-progress-text">${stats.percentage}% (${stats.completedCount}/${stats.totalLessons})</div>
         `;
