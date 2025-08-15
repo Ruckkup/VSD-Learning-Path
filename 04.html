@@ -81,35 +81,11 @@
             h4 { font-size: 1.1em; }
             p, ul li, ol li { font-size: 0.95em; line-height: 1.65; }
         }
-
-        #auth-container {
-            margin-bottom: 20px;
-            text-align: right;
-        }
-        #auth-container button {
-            margin-left: 8px;
-            padding: 6px 16px;
-            border-radius: 5px;
-            border: 1px solid #dee2e6;
-            background: #f8f9fa;
-            color: #0056b3;
-            cursor: pointer;
-        }
-        #auth-container button:hover {
-            background: #e9ecef;
-        }
-        .guest-nav {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            justify-content: flex-end;
-        }
     </style>
 <link rel="stylesheet" href="style.css">
 <body>
     <div class="page-wrapper">
         <div class="vsd-learning-path">
-            <div id="auth-container"></div>
             
             <h2>🏷️ บทเรียนที่ 4: การทำความเข้าใจข้อมูลบน Nameplate ของมอเตอร์สำหรับงาน VSD</h2>
             <p>
@@ -233,47 +209,6 @@
             firebase.initializeApp(firebaseConfig);
           }
         </script>
-
-        <script>
-      // --- AUTH UI ---
-      function renderAuthUI(user) {
-        const container = document.getElementById('auth-container');
-        if (!container) return;
-        if (user) {
-            let name = user.displayName || user.email || 'Guest';
-            container.innerHTML = `
-                <span>เข้าสู่ระบบ: ${name}</span>
-                <button id="logout-btn">ออกจากระบบ</button>
-            `;
-            const logoutBtn = document.getElementById('logout-btn');
-            if (logoutBtn) {
-                logoutBtn.onclick = () => firebase.auth().signOut();
-            }
-        } else {
-            container.innerHTML = `
-                <div class="guest-nav">
-                    <span>Please log in to save your progress.</span>
-                    <a href="index.html" class="nav-button">Home</a>
-                    <button id="login-google-btn">เข้าสู่ระบบด้วย Google</button>
-                </div>
-            `;
-            const googleBtn = document.getElementById('login-google-btn');
-            if (googleBtn) {
-                googleBtn.onclick = function() {
-                    const provider = new firebase.auth.GoogleAuthProvider();
-                    firebase.auth().signInWithPopup(provider)
-                      .catch(error => alert(error.message));
-                };
-            }
-        }
-    }
-
-      // --- Listen for Auth State ---
-      firebase.auth().onAuthStateChanged(function(user) {
-        renderAuthUI(user);
-        // If you have a progress tracker, you would initialize it here
-      });
-</script>
 
         <!-- ไฟล์สคริปต์หลักของคุณ (ต้องอยู่หลัง Firebase) -->
         <script src="scripts.js"></script>
