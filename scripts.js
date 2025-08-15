@@ -255,11 +255,11 @@ function setupLessonFooter(container) {
     // Create Navigation HTML
     let navHTML = '<div class="lesson-nav">';
     navHTML += navInfo.prev 
-        ? `<a href="${navInfo.prev.file}" class="nav-button nav-prev">← ${navInfo.prev.title}</a>`
+        ? `<a href="${navInfo.prev.file}" class="nav-button nav-prev">⇦ ${navInfo.prev.title}</a>`
         : `<div></div>`; // Placeholder for alignment
     navHTML += `<a href="${CONFIG.homePage}" class="nav-button home-button">🏠 กลับหน้าแรก</a>`;
     navHTML += navInfo.next 
-        ? `<a href="${navInfo.next.file}" class="nav-button nav-next">${navInfo.next.title} →</a>`
+        ? `<a href="${navInfo.next.file}" class="nav-button nav-next">${navInfo.next.title} ⇨</a>`
         : `<div></div>`; // Placeholder for alignment
     navHTML += '</div>';
     footerDiv.innerHTML = navHTML;
