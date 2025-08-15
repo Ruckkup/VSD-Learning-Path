@@ -1,12 +1,29 @@
 /* === FONT IMPORT === */
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
 
+/* === CSS VARIABLES === */
+:root {
+    --primary-color: #0056b3;
+    --primary-hover-color: #004494;
+    --secondary-color: #007bff;
+    --success-color: #28a745;
+    --light-gray-color: #f8f9fa;
+    --medium-gray-color: #e9ecef;
+    --dark-gray-color: #6c757d;
+    --text-color: #343a40;
+    --body-bg-color: #f0f2f5;
+    --card-bg-color: #ffffff;
+    --card-border-color: #dee2e6;
+    --card-shadow: 0 4px 8px rgba(0,0,0,0.06);
+    --card-hover-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
 /* === BASE STYLES & LAYOUT === */
 body {
     font-family: 'Sarabun', sans-serif;
-    line-height: 1.7;
-    color: #333;
-    background-color: #f0f2f5;
+    line-height: 1.8;
+    color: var(--text-color);
+    background-color: var(--body-bg-color);
     margin: 0;
     padding: 0;
 }
@@ -17,30 +34,30 @@ body {
 }
 
 .vsd-learning-path {
-    max-width: 1140px; 
+    max-width: 1200px; 
     margin: 0 auto; 
-    background-color: #ffffff;
+    background-color: var(--card-bg-color);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* === TYPOGRAPHY === */
-h1 { color: #0056b3; font-size: 2.2em; font-weight: 700; text-align: center; margin-bottom: 25px; border-bottom: 2px solid #e9ecef; padding-bottom: 20px; }
-h2 { color: #007bff; font-size: 1.6em; font-weight: 700; margin-top: 30px; margin-bottom: 20px; }
+h1 { color: var(--primary-color); font-size: 2.2em; font-weight: 700; text-align: center; margin-bottom: 25px; border-bottom: 2px solid var(--medium-gray-color); padding-bottom: 20px; }
+h2 { color: var(--secondary-color); font-size: 1.6em; font-weight: 700; margin-top: 30px; margin-bottom: 20px; }
 h3 { color: #17a2b8; font-size: 1.4em; font-weight: 700; }
 p, ul li { font-size: 1.0em; margin-bottom: 15px; }
-strong { color: #0056b3; font-weight: 700; }
+strong { color: var(--primary-color); font-weight: 700; }
 
 /* === HOME PAGE: WELCOME SECTION === */
 .welcome-section {
     background-color: #f1f8ff;
-    border-left: 5px solid #007bff;
+    border-left: 5px solid var(--secondary-color);
     padding: 25px 30px;
     margin-bottom: 40px;
     border-radius: 8px;
 }
 .welcome-section h2 {
     margin-top: 0;
-    color: #0056b3;
+    color: var(--primary-color);
 }
 .welcome-section ul {
     list-style: none;
@@ -55,29 +72,29 @@ strong { color: #0056b3; font-weight: 700; }
     position: absolute;
     left: 0;
     top: 0;
-    color: #28a745;
+    color: var(--success-color);
     font-weight: bold;
     font-size: 1.2em;
 }
 
 /* === HOME PAGE: PROGRESS BAR === */
 .progress-container {
-    background-color: #f8f9fa;
+    background-color: var(--light-gray-color);
     border-radius: 10px;
     padding: 20px 25px;
     margin-bottom: 40px;
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--card-border-color);
 }
 .progress-container h3 {
     margin-top: 0;
     margin-bottom: 15px;
-    color: #0056b3;
+    color: var(--primary-color);
     font-size: 1.2em;
 }
 .progress-bar-background {
     width: 100%;
     height: 30px;
-    background-color: #e9ecef;
+    background-color: var(--medium-gray-color);
     border-radius: 15px;
     overflow: hidden;
     position: relative;
@@ -85,14 +102,14 @@ strong { color: #0056b3; font-weight: 700; }
 #progress-bar {
     height: 100%;
     width: 0%; 
-    background-color: #28a745;
+    background-color: var(--success-color);
     border-radius: 15px;
     transition: width 0.5s ease-in-out;
 }
 #progress-text {
     text-align: center;
     font-weight: bold;
-    color: #495057;
+    color: var(--dark-gray-color);
     margin-top: 10px;
     font-size: 1.1em;
 }
@@ -104,28 +121,28 @@ strong { color: #0056b3; font-weight: 700; }
     gap: 30px;
 }
 .module-card {
-    background-color: #ffffff;
-    border: 1px solid #dee2e6;
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--card-border-color);
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+    box-shadow: var(--card-shadow);
     transition: all 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
 }
 .module-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    box-shadow: var(--card-hover-shadow);
 }
 .module-header {
-    background-color: #0056b3;
-    color: #ffffff;
+    background-color: var(--primary-color);
+    color: var(--card-bg-color);
     padding: 15px 20px;
     display: flex;
     align-items: center;
 }
 .module-header h3 {
-    color: #ffffff;
+    color: var(--card-bg-color);
     margin: 0;
     font-size: 1.25em;
 }
@@ -140,7 +157,7 @@ strong { color: #0056b3; font-weight: 700; }
 }
 .lesson-list li {
     margin-bottom: 0;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid var(--medium-gray-color);
 }
 .lesson-list li:last-child {
     border-bottom: none;
@@ -149,12 +166,11 @@ strong { color: #0056b3; font-weight: 700; }
     display: block;
     padding: 14px 20px;
     text-decoration: none;
-    color: #333;
+    color: var(--text-color);
     transition: background-color 0.2s ease, color 0.2s ease;
     font-size: 0.95em;
 }
 
-/* 1. ไอคอนด้านหน้าจะเป็นรูปเอกสารเสมอ */
 .lesson-list a::before {
     content: '📄';
     margin-right: 12px;
@@ -162,18 +178,16 @@ strong { color: #0056b3; font-weight: 700; }
 }
 
 .lesson-list a:hover {
-    background-color: #f8f9fa;
-    color: #0056b3;
+    background-color: var(--light-gray-color);
+    color: var(--primary-color);
     font-weight: 700;
 }
 
-/* 2. สไตล์สำหรับลิงก์ที่เรียนจบแล้ว */
 .lesson-list a.completed {
-    color: #28a745;
+    color: var(--success-color);
     font-weight: bold;
 }
 
-/* 3. เพิ่มเครื่องหมายถูก ✅ ที่ด้านหลัง เฉพาะลิงก์ที่เรียนจบแล้วเท่านั้น */
 .lesson-list a.completed::after {
     content: '';
     margin-left: 10px;
@@ -183,13 +197,11 @@ strong { color: #0056b3; font-weight: 700; }
 .lesson-footer {
     margin-top: 30px;
     padding-top: 20px;
-    border-top: 1px solid #e9ecef;
+    border-top: 1px solid var(--medium-gray-color);
 }
 
-/* --- NEW LAYOUT FOR NAVIGATION --- */
 .lesson-nav {
     display: grid;
-    /* 3-column layout: Left (flexible), Center (auto-size), Right (flexible) */
     grid-template-columns: 1fr auto 1fr;
     gap: 15px;
     align-items: center;
@@ -198,36 +210,34 @@ strong { color: #0056b3; font-weight: 700; }
 
 .nav-button {
     padding: 10px 15px;
-    background-color: #f8f9fa;
-    color: #0056b3;
+    background-color: var(--light-gray-color);
+    color: var(--primary-color);
     text-decoration: none;
     border-radius: 5px;
     transition: all 0.2s ease;
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--card-border-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-align: center; /* Center text within the button */
+    text-align: center;
 }
 
 .nav-button:hover {
-    background-color: #e9ecef;
+    background-color: var(--medium-gray-color);
     transform: translateY(-2px);
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Specific alignment for each button in the grid */
 .nav-button.nav-prev {
-    justify-self: start; /* Align to the left */
+    justify-self: start;
 }
 .nav-button.home-button {
-    justify-self: center; /* Align to the center */
+    justify-self: center;
 }
 .nav-button.nav-next {
-    justify-self: end; /* Align to the right */
+    justify-self: end;
 }
 
-/* --- COMPLETE & RESET BUTTONS CONTAINER --- */
 .button-container {
     display: flex;
     gap: 10px;
@@ -242,24 +252,24 @@ strong { color: #0056b3; font-weight: 700; }
     font-size: 1.1em;
     font-weight: 700;
     cursor: pointer;
-    background-color: #007bff;
+    background-color: var(--secondary-color);
     color: white;
     border: none;
     border-radius: 8px;
     transition: background-color 0.2s;
-    flex: 2; /* Make it wider than the reset button */
+    flex: 2;
 }
 #mark-complete-btn:hover:not(.completed) {
-    background-color: #0056b3;
+    background-color: var(--primary-hover-color);
 }
 #mark-complete-btn.completed {
-    background-color: #28a745;
+    background-color: var(--success-color);
     cursor: default;
 }
 
 .reset-button {
     padding: 12px;
-    background-color: #6c757d; /* Softer color */
+    background-color: var(--dark-gray-color);
     color: white;
     border: none;
     border-radius: 8px;
@@ -267,7 +277,7 @@ strong { color: #0056b3; font-weight: 700; }
     font-weight: 700;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    flex: 1; /* Make it narrower than the complete button */
+    flex: 1;
 }
 .reset-button:hover {
     background-color: #5a6268;
@@ -275,7 +285,7 @@ strong { color: #0056b3; font-weight: 700; }
 
 /* === RESOURCE CENTER MODULE STYLING === */
 #module-07 .module-header {
-    background-color: #6c757d;
+    background-color: var(--dark-gray-color);
 }
 #module-07 .lesson-list a::before {
     content: '📂';
@@ -286,7 +296,7 @@ strong { color: #0056b3; font-weight: 700; }
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #28a745;
+    background-color: var(--success-color);
     color: white;
     padding: 15px 25px;
     border-radius: 8px;
@@ -305,7 +315,7 @@ strong { color: #0056b3; font-weight: 700; }
 /* === RESPONSIVE ADJUSTMENTS === */
 @media (max-width: 768px) {
     .page-wrapper { 
-        background-color: #ffffff; 
+        background-color: var(--card-bg-color); 
         padding: 0; 
     }
     .vsd-learning-path { 
@@ -321,15 +331,14 @@ strong { color: #0056b3; font-weight: 700; }
         gap: 20px;
     }
     
-    /* Responsive Navigation */
     .lesson-nav {
-        grid-template-columns: 1fr; /* Stack buttons vertically on mobile */
+        grid-template-columns: 1fr;
         gap: 10px;
     }
     .nav-button.nav-prev,
     .nav-button.home-button,
     .nav-button.nav-next {
-        justify-self: stretch; /* Make all buttons full-width */
+        justify-self: stretch;
         width: 100%;
     }
 
@@ -338,7 +347,7 @@ strong { color: #0056b3; font-weight: 700; }
     }
 }
 
-/* === สไตล์สำหรับส่วน Authentication === */
+/* === Authentication Styles === */
 #auth-container {
     position: absolute;
     top: 25px;
@@ -350,13 +359,13 @@ strong { color: #0056b3; font-weight: 700; }
 #auth-container span {
     display: block;
     margin-bottom: 5px;
-    color: #6c757d;
+    color: var(--dark-gray-color);
 }
 
 #auth-container button {
     background-color: transparent;
-    border: 1px solid #007bff;
-    color: #007bff;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
     padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
@@ -364,11 +373,10 @@ strong { color: #0056b3; font-weight: 700; }
 }
 
 #auth-container button:hover {
-    background-color: #007bff;
+    background-color: var(--secondary-color);
     color: white;
 }
 
-/* Responsive สำหรับมือถือ */
 @media (max-width: 768px) {
     #auth-container {
         position: static;
