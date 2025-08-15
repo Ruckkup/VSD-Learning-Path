@@ -158,7 +158,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isHomePage) {
         initializeHomePage();
     } else if (lessonContainer) {
+        // Initial setup
         initializeLessonPage(lessonContainer);
+
+        // Add event listener for pageshow to handle back/forward navigation
+        window.addEventListener('pageshow', function(event) {
+            // Re-initialize the lesson page to update button states
+            initializeLessonPage(document.querySelector('.vsd-learning-path:not(:has(.module-grid))'));
+        });
     }
 });
 
@@ -219,13 +226,17 @@ function updateAllModuleProgress() {
 
 // --- LESSON PAGE FUNCTIONS ---
 function initializeLessonPage(container) {
-    const conclusionDiv = container.querySelector('.conclusion');
-    if (conclusionDiv) {
-        setupLessonFooter(conclusionDiv);
+    // Clear existing footer to prevent duplicates on pageshow
+    const existingFooter = container.querySelector('.lesson-footer');
+    if (existingFooter) {
+        existingFooter.remove();
     }
+
+    // The main container is the reliable element to append the footer to.
+    setupLessonFooter(container);
 }
 
-function setupLessonFooter(conclusionDiv) {
+function setupLessonFooter(container) {
     const navInfo = lessonNavigator.getNavigationInfo();
     const currentIndex = lessonNavigator.getCurrentLessonIndex();
     if (currentIndex === -1) return;
@@ -294,8 +305,8 @@ function setupLessonFooter(conclusionDiv) {
     buttonContainer.appendChild(resetButton);
     footerDiv.appendChild(buttonContainer);
 
-    // Append the entire footer to the conclusion section
-    conclusionDiv.appendChild(footerDiv);
+    // Append the entire footer to the container
+    container.appendChild(footerDiv);
 }
 
 
@@ -339,14 +350,10 @@ function renderAuthUI(user) {
         // Show login button
         container.innerHTML = `
             <button id="login-google-btn">เข้าสู่ระบบด้วย Google</button>
-            <button id="login-anon-btn">เข้าแบบไม่ระบุชื่อ</button>
         `;
         document.getElementById('login-google-btn').onclick = () => {
             const provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider);
-        };
-        document.getElementById('login-anon-btn').onclick = () => {
-            firebase.auth().signInAnonymously();
         };
     }
 }
