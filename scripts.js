@@ -75,11 +75,22 @@ class ProgressTracker {
 
     loadProgress() {
         if (!this.userId) return;
-        firebase.database().ref('progress/' + this.userId).once('value').then(snapshot => {
+        const progressRef = firebase.database().ref('progress/' + this.userId);
+        
+        // Use .on() for real-time updates
+        progressRef.on('value', snapshot => {
             this.progress = snapshot.val() || {};
+            
+            // Update UI whenever progress changes
             updateHomePageLinks();
             updateProgressBar();
             updateAllModuleProgress();
+
+            // If on a lesson page, re-initialize it to update buttons
+            const lessonContainer = document.querySelector('.vsd-learning-path:not(:has(.module-grid))');
+            if (lessonContainer) {
+                initializeLessonPage(lessonContainer);
+            }
         });
     }
 
