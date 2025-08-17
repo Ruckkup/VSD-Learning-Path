@@ -258,7 +258,7 @@ function setupLessonFooter(container) {
     const footerDiv = document.createElement('div');
     footerDiv.className = 'lesson-footer';
 
-    // Create Navigation HTML
+    // --- Always show navigation ---
     let navHTML = '<div class="lesson-nav">';
     navHTML += navInfo.prev 
         ? `<a href="${navInfo.prev.file}" class="nav-button nav-prev">⇦ ${navInfo.prev.title}</a>`
@@ -270,52 +270,49 @@ function setupLessonFooter(container) {
     navHTML += '</div>';
     footerDiv.innerHTML = navHTML;
 
-    // Create Button Container
+    // --- Only show progress buttons if logged in ---
     const buttonContainer = document.createElement('div');
     buttonContainer.className = 'button-container';
 
-    // Create Mark Complete Button
-    const completeButton = document.createElement('button');
-    completeButton.id = 'mark-complete-btn';
-    completeButton.textContent = isCompleted ? '✅ เรียนจบบทนี้แล้ว' : 'ทำเครื่องหมายว่าเรียนจบแล้ว';
-    if (isCompleted) {
-        completeButton.classList.add('completed');
+    if (progressTracker.userId) {
+        // Create Mark Complete Button
+        const completeButton = document.createElement('button');
+        completeButton.id = 'mark-complete-btn';
+        completeButton.textContent = isCompleted ? '✅ เรียนจบบทนี้แล้ว' : 'ทำเครื่องหมายว่าเรียนจบแล้ว';
+        if (isCompleted) {
+            completeButton.classList.add('completed');
+        }
+
+        // Create Reset Button
+        const resetButton = document.createElement('button');
+        resetButton.id = 'reset-progress-btn';
+        resetButton.textContent = '🔄 รีเซ็ตบทเรียนนี้';
+        resetButton.style.display = isCompleted ? 'inline-block' : 'none'; // Show only if completed
+
+        // --- Event Listeners ---
+        completeButton.addEventListener('click', () => {
+            if (!progressTracker.isComplete(currentLesson.id)) {
+                progressTracker.markComplete(currentLesson.id);
+                completeButton.textContent = '✅ เรียนจบบทนี้แล้ว';
+                completeButton.classList.add('completed');
+                resetButton.style.display = 'inline-block';
+                showNotification('บันทึกความคืบหน้าเรียบร้อย!');
+            }
+        });
+
+        resetButton.addEventListener('click', () => {
+            progressTracker.resetProgress(currentLesson.id);
+            completeButton.textContent = 'ทำเครื่องหมายว่าเรียนจบแล้ว';
+            completeButton.classList.remove('completed');
+            resetButton.style.display = 'none';
+            showNotification('รีเซ็ตบทเรียนเรียบร้อย!');
+        });
+
+        buttonContainer.appendChild(completeButton);
+        buttonContainer.appendChild(resetButton);
     }
 
-    // Create Reset Button
-    const resetButton = document.createElement('button');
-    resetButton.id = 'reset-progress-btn';
-    resetButton.textContent = '🔄 รีเซ็ตบทเรียนนี้';
-    resetButton.style.display = isCompleted ? 'inline-block' : 'none'; // Show only if completed
-
-    // --- Event Listeners ---
-    completeButton.addEventListener('click', () => {
-        if (!progressTracker.userId) {
-            showNotification('กรุณาเข้าสู่ระบบก่อนบันทึกความคืบหน้า');
-            return;
-        }
-        if (!progressTracker.isComplete(currentLesson.id)) {
-            progressTracker.markComplete(currentLesson.id);
-            completeButton.textContent = '✅ เรียนจบบทนี้แล้ว';
-            completeButton.classList.add('completed');
-            resetButton.style.display = 'inline-block';
-            showNotification('บันทึกความคืบหน้าเรียบร้อย!');
-        }
-    });
-
-    resetButton.addEventListener('click', () => {
-        progressTracker.resetProgress(currentLesson.id);
-        completeButton.textContent = 'ทำเครื่องหมายว่าเรียนจบแล้ว';
-        completeButton.classList.remove('completed');
-        resetButton.style.display = 'none';
-        showNotification('รีเซ็ตบทเรียนเรียบร้อย!');
-    });
-
-    buttonContainer.appendChild(completeButton);
-    buttonContainer.appendChild(resetButton);
     footerDiv.appendChild(buttonContainer);
-
-    // Append the entire footer to the container
     container.appendChild(footerDiv);
 }
 
