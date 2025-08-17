@@ -270,36 +270,43 @@ function setupLessonFooter(container) {
     navHTML += '</div>';
     footerDiv.innerHTML = navHTML;
 
-    // --- Only show progress buttons if logged in ---
+    // --- Always show Complete button ---
     const buttonContainer = document.createElement('div');
     buttonContainer.className = 'button-container';
 
-    if (progressTracker.userId) {
-        // Create Mark Complete Button
-        const completeButton = document.createElement('button');
-        completeButton.id = 'mark-complete-btn';
-        completeButton.textContent = isCompleted ? '✅ เรียนจบบทนี้แล้ว' : 'ทำเครื่องหมายว่าเรียนจบแล้ว';
-        if (isCompleted) {
-            completeButton.classList.add('completed');
-        }
+    // Create Mark Complete Button
+    const completeButton = document.createElement('button');
+    completeButton.id = 'mark-complete-btn';
+    completeButton.textContent = isCompleted ? '✅ เรียนจบบทนี้แล้ว' : 'ทำเครื่องหมายว่าเรียนจบแล้ว';
+    if (isCompleted) {
+        completeButton.classList.add('completed');
+    }
 
-        // Create Reset Button
-        const resetButton = document.createElement('button');
+    // Create Reset Button (only for logged in users)
+    let resetButton = null;
+    if (progressTracker.userId) {
+        resetButton = document.createElement('button');
         resetButton.id = 'reset-progress-btn';
         resetButton.textContent = '🔄 รีเซ็ตบทเรียนนี้';
         resetButton.style.display = isCompleted ? 'inline-block' : 'none'; // Show only if completed
+    }
 
-        // --- Event Listeners ---
-        completeButton.addEventListener('click', () => {
-            if (!progressTracker.isComplete(currentLesson.id)) {
-                progressTracker.markComplete(currentLesson.id);
-                completeButton.textContent = '✅ เรียนจบบทนี้แล้ว';
-                completeButton.classList.add('completed');
-                resetButton.style.display = 'inline-block';
-                showNotification('บันทึกความคืบหน้าเรียบร้อย!');
-            }
-        });
+    // --- Event Listeners ---
+    completeButton.addEventListener('click', () => {
+        if (!progressTracker.userId) {
+            showNotification('กรุณาเข้าสู่ระบบ Google ก่อนบันทึกความคืบหน้า');
+            return;
+        }
+        if (!progressTracker.isComplete(currentLesson.id)) {
+            progressTracker.markComplete(currentLesson.id);
+            completeButton.textContent = '✅ เรียนจบบทนี้แล้ว';
+            completeButton.classList.add('completed');
+            if (resetButton) resetButton.style.display = 'inline-block';
+            showNotification('บันทึกความคืบหน้าเรียบร้อย!');
+        }
+    });
 
+    if (resetButton) {
         resetButton.addEventListener('click', () => {
             progressTracker.resetProgress(currentLesson.id);
             completeButton.textContent = 'ทำเครื่องหมายว่าเรียนจบแล้ว';
@@ -307,10 +314,10 @@ function setupLessonFooter(container) {
             resetButton.style.display = 'none';
             showNotification('รีเซ็ตบทเรียนเรียบร้อย!');
         });
-
-        buttonContainer.appendChild(completeButton);
-        buttonContainer.appendChild(resetButton);
     }
+
+    buttonContainer.appendChild(completeButton);
+    if (resetButton) buttonContainer.appendChild(resetButton);
 
     footerDiv.appendChild(buttonContainer);
     container.appendChild(footerDiv);
@@ -356,7 +363,7 @@ function renderAuthUI(user) {
     } else {
         // Show login button
         container.innerHTML = `
-            <button id="login-google-btn">เข้าสู่ระบบด้วย Google</button>
+            <button id="login-google-btn">กรุณาเข้าสู่ระบบก่อน</button>
         `;
         document.getElementById('login-google-btn').onclick = () => {
             const provider = new firebase.auth.GoogleAuthProvider();
