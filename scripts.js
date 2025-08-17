@@ -264,9 +264,14 @@ function setupLessonFooter(container) {
         ? `<a href="${navInfo.prev.file}" class="nav-button nav-prev">⇦ ${navInfo.prev.title}</a>`
         : `<div></div>`; // Placeholder for alignment
     navHTML += `<a href="${CONFIG.homePage}" class="nav-button home-button">🏠 กลับหน้าแรก</a>`;
-    navHTML += navInfo.next 
-        ? `<a href="${navInfo.next.file}" class="nav-button nav-next">${navInfo.next.title} ⇨</a>`
-        : `<div></div>`; // Placeholder for alignment
+    // Remove next lesson button for lesson 30
+    if (currentLesson.file !== '30.html') {
+        navHTML += navInfo.next 
+            ? `<a href="${navInfo.next.file}" class="nav-button nav-next">${navInfo.next.title} ⇨</a>`
+            : `<div></div>`; // Placeholder for alignment
+    } else {
+        navHTML += `<div></div>`; // Placeholder for alignment
+    }
     navHTML += '</div>';
     footerDiv.innerHTML = navHTML;
 
@@ -363,7 +368,7 @@ function renderAuthUI(user) {
     } else {
         // Show login button
         container.innerHTML = `
-            <button id="login-google-btn">กรุณาเข้าสู่ระบบก่อน</button>
+            <button id="login-google-btn">เข้าสู่ระบบด้วย google</button>
         `;
         document.getElementById('login-google-btn').onclick = () => {
             const provider = new firebase.auth.GoogleAuthProvider();
