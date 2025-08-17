@@ -34,7 +34,8 @@ body {
 }
 
 .vsd-learning-path {
-    max-width: 1200px; 
+    max-width: none; 
+    width: 92%;
     margin: 0 auto; 
     background-color: var(--card-bg-color);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -288,7 +289,7 @@ strong { color: var(--primary-color); font-weight: 700; }
 
 /* === RESOURCE CENTER MODULE STYLING === */
 #module-07 .module-header {
-    background-color: var(--dark-gray-color);
+    background-color: #38b33e;
 }
 #module-07 .lesson-list a::before {
     content: '📂';
