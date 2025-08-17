@@ -29,16 +29,25 @@ body {
 }
 
 .page-wrapper {
-    padding: 20px 0;
+    background-color: #f0f2f5;
+    padding: 0;
     min-height: 100vh;
 }
 
 .vsd-learning-path {
-    max-width: none; 
+    max-width: none;
     width: 100%;
-    margin: 0 auto; 
-    background-color: var(--card-bg-color);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin: 0;
+    padding: 30px 40px 50px 40px; /* 40px left/right margin */
+    box-shadow: none;
+    border-radius: 0;
+    background-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .vsd-learning-path {
+        padding: 15px 8px 25px 8px; /* smaller margin on mobile */
+    }
 }
 
 /* === TYPOGRAPHY === */
