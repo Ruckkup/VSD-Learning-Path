@@ -169,7 +169,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isHomePage) {
         initializeHomePage();
     } else if (lessonContainer) {
-        // Initial setup is handled by the real-time listener in loadProgress
+        // Always initialize the lesson page to show navigation.
+        // The auth state listener will handle updating the button states later.
+        initializeLessonPage(lessonContainer);
     }
 });
 
