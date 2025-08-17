@@ -60,6 +60,7 @@ class ProgressTracker {
         this.userId = null;
         this.progress = {};
         firebase.auth().onAuthStateChanged(user => {
+            const lessonContainer = document.querySelector('.vsd-learning-path:not(:has(.module-grid))');
             if (user) {
                 this.userId = user.uid;
                 this.loadProgress();
@@ -69,6 +70,9 @@ class ProgressTracker {
                 updateHomePageLinks();
                 updateProgressBar();
                 updateAllModuleProgress();
+                if (lessonContainer) {
+                    initializeLessonPage(lessonContainer); // Explicitly update lesson page for logged-out state
+                }
             }
         });
     }
